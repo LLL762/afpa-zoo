@@ -7,13 +7,13 @@ const configs = {
   dbName: process.env.DATASOURCE_DB_NAME as string,
 } as const;
 
-const connect = () => {
-  mongoose.connect(configs.dbUrl, {
+const connect = async () => {
+  await mongoose.connect(configs.dbUrl, {
     user: configs.user,
     pass: configs.pass,
     dbName: configs.dbName,
   });
-
+  mongoose.set("debug", true);
   mongoose.connection.on("error", (err) => console.log(err));
 };
 

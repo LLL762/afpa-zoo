@@ -1,14 +1,23 @@
 import { it, describe, expect, test } from "@jest/globals";
+import Zone from "../model/Zone";
 import TDatasource from "./init/TDatasource";
+import ZoneMock from "./mock-data/ZoneMock";
 
 beforeAll(async () => {
-  TDatasource.connect();
+  await TDatasource.connect();
+  await TDatasource.populate();
 });
 
 afterAll(async () => {
-  TDatasource.close();
+  await TDatasource.close();
 });
 
-test("index route works", async () => {
-  expect(1).toBeLessThan(3);
-});
+
+test("works", async () => {
+
+  const zones = await Zone.m.find({}).exec();
+  expect(zones).toHaveLength(ZoneMock.data.length);
+})
+
+
+
