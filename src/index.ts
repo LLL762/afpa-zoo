@@ -1,14 +1,15 @@
 import * as dotenv from "dotenv";
 dotenv.config();
-import express, { Router } from "express";
+import express from "express";
 import logger from "morgan";
 import Datasource from "./init/Datasource";
 import Server from "./init/Server";
 import cors from "cors";
 import GlobalErrorHandler from "./error/handler/GlobalErrorHandler";
 import { initRouter } from "./init/RouterInit";
-import AnimalsMock from "./test/mock-data/AnimalsMock";
-import EnclosureMock from "./test/mock-data/EnclosureMock";
+import EnclosureType from "./model/EnclosureType";
+import Ajv from "ajv";
+import { CustomError } from "./error/CustomError";
 
 const app = express();
 const router = express.Router();
@@ -28,4 +29,20 @@ app.use(GlobalErrorHandler.handle);
 
 /* AnimalsMock.insert(); */
 
-EnclosureMock.insert();
+/* EnclosureTypeMock.insert(); */
+
+const test = async () => {
+  const type = await EnclosureType.m
+    .findOne({ name: "Vivarium" })
+    .orFail()
+    .exec();
+
+  console.log(type.validationSchema);
+  const r = undefined;
+
+  const validate = new Ajv().compile(type.validationSchema);
+  console.log(validate({ temperatureInCelsius: 23, hygrometry: 47 }));
+  console.log(validate.errors);
+};
+
+test();

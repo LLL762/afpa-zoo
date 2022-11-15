@@ -17,4 +17,8 @@ const insert = async () => {
   Animal.m.insertMany(animals);
 };
 
-export default { insert };
+const clean = async () => {
+  Animal.m.collection.drop();
+};
+
+export default { insert, clean };

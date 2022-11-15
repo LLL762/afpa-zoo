@@ -4,7 +4,7 @@ import http from "http";
 const init = (app: Express) => {
   const server = http.createServer(app);
   const port = process.env.SERVER_PORT ?? 3000;
-  server.listen(port, () => console.log(`Server starts on port ${port}`));
+  server.listen(port, () => console.log(`Server started on port ${port}`));
 };
 
 export default { init };
