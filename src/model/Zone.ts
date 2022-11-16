@@ -1,7 +1,9 @@
-import { InferSchemaType, model, Schema } from "mongoose";
+import { InferSchemaType, model, Schema, SchemaTypes } from "mongoose";
+import UriConfigs from "../configs/UriConfigs";
 import ValidationMsg from "../messages/ValidationMsg";
 
 const properties = {
+  url: UriConfigs.URIS.base + UriConfigs.URIS.zones,
   name: {
     maxLength: 255,
     minLength: 1,
@@ -10,10 +12,15 @@ const properties = {
     maxLength: 5000,
     minLength: 5,
   },
+  page: {
+    size: 20,
+    maxSize: 50,
+  },
 } as const;
 
 const schema = new Schema(
   {
+    _id: SchemaTypes.ObjectId,
     name: {
       type: String,
       required: [true, ValidationMsg.required("name")],
@@ -50,7 +57,7 @@ const schema = new Schema(
   { collection: "zones", timestamps: true }
 );
 
-export type Zone = InferSchemaType<typeof schema>;
+export type TypeZone = InferSchemaType<typeof schema>;
 
 const m = model("Zone", schema);
 

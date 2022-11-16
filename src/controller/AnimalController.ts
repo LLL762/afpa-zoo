@@ -1,4 +1,4 @@
-import { NextFunction, Request, response, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import UriConfigs from "../configs/UriConfigs";
 import Animal from "../model/Animal";
 import { IJsonResp } from "../model/IJsonResp";

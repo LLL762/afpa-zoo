@@ -14,5 +14,6 @@ afterAll(async () => {
 
 test("works", async () => {
   const zones = await Zone.m.find({}).exec();
+
   expect(zones).toHaveLength(ZoneMock.data.length);
 });

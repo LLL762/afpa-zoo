@@ -1,6 +1,7 @@
 const URIS = {
   base: "/api",
   animals: "/animals",
+  zones: "/zones",
 } as const;
 
 const PATHVARS = {

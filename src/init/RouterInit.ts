@@ -2,6 +2,9 @@ import { Router } from "express";
 import UriConfigs from "../configs/UriConfigs";
 import AnimalRoutes from "../routes/AnimalRoutes";
 import { IAppRoute } from "../routes/IRoute";
+import ZoneRoutes from "../routes/ZoneRoutes";
+
+const routesPack: IAppRoute[][] = [AnimalRoutes.routes, ZoneRoutes.routes];
 
 const setUpRoutes = (router: Router, routes: IAppRoute[]) => {
   routes.forEach((route) => {
@@ -33,7 +36,9 @@ const setUpRoutes = (router: Router, routes: IAppRoute[]) => {
 };
 
 export const initRouter = (router: Router) => {
-  setUpRoutes(router, AnimalRoutes.routes);
+  for (let routes of routesPack) {
+    setUpRoutes(router, routes);
+  }
 
   router.all("*", (req, res) => {
     res.status(404).json({
