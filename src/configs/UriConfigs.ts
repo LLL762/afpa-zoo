@@ -5,7 +5,7 @@ const URIS = {
 } as const;
 
 const PATHVARS = {
-  id: "/:id",
+  id: ":id",
 } as const;
 
 export default { URIS, PATHVARS };

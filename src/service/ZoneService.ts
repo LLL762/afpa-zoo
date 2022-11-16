@@ -26,4 +26,10 @@ const findAll = async (_pageIndex: number, _pageSize: number) => {
   };
 };
 
-export default { findAll };
+const findById = async (_id: string) =>
+  ZoneRepo.findById(_id);
+
+
+
+
+export default { findAll, findById };

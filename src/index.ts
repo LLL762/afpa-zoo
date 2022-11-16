@@ -7,7 +7,7 @@ import Server from "./init/Server";
 import cors from "cors";
 import GlobalErrorHandler from "./error/handler/GlobalErrorHandler";
 import { initRouter } from "./init/RouterInit";
-import ZoneMock from "./test/mock-data/ZoneMock";
+
 
 const app = express();
 const router = express.Router();
@@ -24,3 +24,5 @@ initRouter(router);
 
 app.use(router);
 app.use(GlobalErrorHandler.handle);
+
+

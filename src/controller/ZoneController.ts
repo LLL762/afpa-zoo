@@ -21,6 +21,24 @@ const getAll = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const getById = async (req: Request, res: Response, next: NextFunction) => {};
+const getById = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const _id = req.params.id;
+    const data = await ZoneService.findById(_id);
+    const json = {
+      url: req.url,
+      method: req.method,
+      statusCode: 200,
+      data: data,
+    };
+    sendJsonResp(json, res);
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+
+
 
 export default { getAll, getById };
