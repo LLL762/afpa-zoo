@@ -5,19 +5,14 @@ import ZoneMock from "./mock-data/ZoneMock";
 
 beforeAll(async () => {
   await TDatasource.connect();
-  await TDatasource.populate();
+  await TDatasource.populate([]);
 });
 
 afterAll(async () => {
   await TDatasource.close();
 });
 
-
 test("works", async () => {
-
   const zones = await Zone.m.find({}).exec();
   expect(zones).toHaveLength(ZoneMock.data.length);
-})
-
-
-
+});

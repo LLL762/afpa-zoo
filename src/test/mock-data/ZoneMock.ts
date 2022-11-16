@@ -1,4 +1,5 @@
 import Zone from "../../model/Zone";
+import { IMockDataUtil } from "./IMockDataUtil";
 
 const data = [
   {
@@ -31,13 +32,15 @@ const data = [
     name: "Mountain Europa",
     description: "Mountain Europa",
   },
-];
+] as const;
 
-const insert = async () => {
-  await Zone.m.insertMany(data);
-};
-const clean = async () => {
-  Zone.m.collection.drop();
-};
+const util: IMockDataUtil = {
+  insert: async function () {
+    await Zone.m.insertMany(data);
+  },
+  clean: async function () {
+    await Zone.m.deleteMany({}).exec();
+  },
+} as const;
 
-export default { data, insert, clean };
+export default { data, util };

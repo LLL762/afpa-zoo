@@ -1,7 +1,9 @@
 import Animal from "../../model/Animal";
+import { IMockDataUtil } from "./IMockDataUtil";
 
-const animals = [
+const data = [
   {
+    _id: "507f1f77bcf86cd799439011",
     name: "Drako",
     birthDate: "2018-12-10T13:49:51.141Z",
     managedSince: "2020-12-10T13:49:51.141Z",
@@ -11,14 +13,15 @@ const animals = [
     stimulated: true,
     observations: "Annoying",
   },
-];
+] as const;
 
-const insert = async () => {
-  Animal.m.insertMany(animals);
-};
+const util: IMockDataUtil = {
+  insert: async function () {
+    await Animal.m.insertMany(data);
+  },
+  clean: async function () {
+    await Animal.m.deleteMany({}).exec();
+  },
+} as const;
 
-const clean = async () => {
-  Animal.m.collection.drop();
-};
-
-export default { insert, clean };
+export default { util, data };

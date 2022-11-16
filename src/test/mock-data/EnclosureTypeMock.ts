@@ -1,8 +1,9 @@
 import EnclosureType from "../../model/EnclosureType";
+import { IMockDataUtil } from "./IMockDataUtil";
 
 const data = [
   {
-    _id: 1,
+    _id: "507f1f77bcf86cd799439011",
     name: "Vivarium",
     description: "Vivarium",
 
@@ -23,9 +24,9 @@ const data = [
     },
   },
   {
-    _id: 2,
+    _id: "507f1f77bcf86cd799439012",
     name: "Pool",
-    description: "Pool",
+    description: "Pool pull",
 
     validationSchema: {
       type: "object",
@@ -45,13 +46,15 @@ const data = [
       additionalProperties: false,
     },
   },
-];
+] as const;
 
-const insert = async () => {
-  EnclosureType.m.insertMany(data);
-};
-const clean = async () => {
-  EnclosureType.m.collection.drop();
-};
+const util: IMockDataUtil = {
+  insert: async () => {
+    await EnclosureType.m.insertMany(data);
+  },
+  clean: async () => {
+    EnclosureType.m.collection.drop();
+  },
+} as const;
 
-export default { insert, clean };
+export default { data, util };
