@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { Error } from "mongoose";
+import { sendJsonResp } from "../../model/IJsonResp";
+import { BadRequestError } from "../BadRequestError";
 
 const handle = async (
   err: Error,
@@ -16,6 +18,19 @@ const handle = async (
       url: req.url,
       error: "Requested resource does not exist",
     });
+    return;
+  }
+
+  if (err instanceof BadRequestError) {
+    const json = {
+      url: req.url,
+      method: req.method,
+      statusCode: 400,
+      timestamp: Date.now(),
+      errors: err.details,
+    };
+
+    sendJsonResp(json, res);
     return;
   }
 

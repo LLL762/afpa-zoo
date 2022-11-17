@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 
 import Ajv from "ajv";
-import { param, query } from "express-validator";
+import { header, param, query } from "express-validator";
+import { BadRequestError } from "../error/BadRequestError";
 
 const isValidJsonSchema = (json: object) => {
   try {
@@ -12,7 +13,7 @@ const isValidJsonSchema = (json: object) => {
   }
 };
 
-const checkIdReqParam = () =>
+const checkIdReqParam = async () =>
   param("id")
     .exists()
     .withMessage("missing required parameter id")
@@ -20,24 +21,30 @@ const checkIdReqParam = () =>
     .isMongoId()
     .withMessage("id parameter must be a valid mongoId");
 
-const checkPageQueryParam = () => {
-  query("size")
-    .isInt({ min: 1 })
-    .withMessage("")
-    .toInt()
+const checkContentType = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  req.headers["content-type"] == "application/json"
+    ? next()
+    : next(
+        new BadRequestError("content-type must be application/json", {
+          type: "BadRequestError",
+          message: "Content type must be application/json",
+        })
+      );
+};
 
-  query("page")
-    .isInt({ min: 1 })
-    .withMessage("")
-    .toInt()
-}
+const checkPageQueryParam = async () => {
+  query("size").isInt({ min: 1 }).withMessage("").toInt();
 
+  query("page").isInt({ min: 1 }).withMessage("").toInt();
+};
 
-
-
-
-
-
-
-
-export default { isValidJsonSchema, checkIdReqParam, checkPageQueryParam };
+export default {
+  isValidJsonSchema,
+  checkIdReqParam,
+  checkPageQueryParam,
+  checkContentType,
+};
