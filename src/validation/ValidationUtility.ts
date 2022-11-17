@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 import Ajv from "ajv";
-import { header, param, query } from "express-validator";
+import { param, query } from "express-validator";
 import { BadRequestError } from "../error/BadRequestError";
 
 const isValidJsonSchema = (json: object) => {
@@ -13,7 +13,7 @@ const isValidJsonSchema = (json: object) => {
   }
 };
 
-const checkIdReqParam = async () =>
+const checkIdReqParam = () =>
   param("id")
     .exists()
     .withMessage("missing required parameter id")
@@ -31,20 +31,38 @@ const checkContentType = async (
     : next(
         new BadRequestError("content-type must be application/json", {
           type: "BadRequestError",
+          status: 400,
           message: "Content type must be application/json",
         })
       );
 };
 
-const checkPageQueryParam = async () => {
-  query("size").isInt({ min: 1 }).withMessage("").toInt();
+const checkSizeQueryParam = () =>
+  query("size")
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage(
+      "Query parameter size must be an integer greater or equal to 1"
+    )
+    .toInt();
 
-  query("page").isInt({ min: 1 }).withMessage("").toInt();
-};
+const checkPageQueryParam = () =>
+  query("page")
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage(
+      "Query parameter page must be an integer greater or equal to 1"
+    )
+    .toInt();
+
+const checkPageQueryParams = () => [
+  checkSizeQueryParam(),
+  checkPageQueryParam(),
+];
 
 export default {
   isValidJsonSchema,
   checkIdReqParam,
-  checkPageQueryParam,
+  checkPageQueryParams,
   checkContentType,
 };

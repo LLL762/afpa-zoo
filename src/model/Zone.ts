@@ -16,11 +16,14 @@ const properties = {
     size: 20,
     maxSize: 50,
   },
+  search: {
+    min: 2,
+    maxResult: 10,
+  },
 } as const;
 
 const schema = new Schema(
   {
-    _id: SchemaTypes.ObjectId,
     name: {
       type: String,
       required: [true, ValidationMsg.required("name")],
@@ -57,6 +60,7 @@ const schema = new Schema(
   { collection: "zones", timestamps: true }
 );
 
+schema.index({ name: "text" });
 export type TypeZone = InferSchemaType<typeof schema>;
 
 const m = model("Zone", schema);

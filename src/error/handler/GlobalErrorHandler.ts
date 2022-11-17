@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import { Error } from "mongoose";
 import { sendJsonResp } from "../../model/IJsonResp";
-import { BadRequestError } from "../BadRequestError";
+import { CustomError } from "../CustomError";
 
 const handle = async (
-  err: Error,
+  err: any,
   req: Request,
   res: Response,
   next: NextFunction
@@ -21,18 +21,30 @@ const handle = async (
     return;
   }
 
-  if (err instanceof BadRequestError) {
+  if (err instanceof CustomError) {
     const json = {
+      url: req.url,
+      method: req.method,
+      statusCode: err.httpStatus ?? 500,
+      timestamp: Date.now(),
+      errors: err.details ?? {},
+    };
+
+    sendJsonResp(json, res, err.httpStatus);
+    return;
+  }
+
+  if (err.status === 400)
+    return res.status(400).json({
       url: req.url,
       method: req.method,
       statusCode: 400,
       timestamp: Date.now(),
-      errors: err.details,
-    };
-
-    sendJsonResp(json, res);
-    return;
-  }
+      errors: {
+        type: "BadRequestError",
+        message: "Request body must be a valid json",
+      },
+    });
 
   res.status(500).send({
     status: 500,

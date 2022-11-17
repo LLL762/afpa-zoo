@@ -1,4 +1,7 @@
-import Zone from "../model/Zone";
+import Zone, { TypeZone } from "../model/Zone";
+import { Doc } from "../utility/TsTypes";
+
+const props = Zone.properties;
 
 const findAll = async (pageIndex: number, pageSize: number) =>
   Zone.m
@@ -10,5 +13,18 @@ const findAll = async (pageIndex: number, pageSize: number) =>
 
 const count = async () => Zone.m.countDocuments().exec();
 const findById = async (id: string) => Zone.m.findById(id).orFail().exec();
+const searchByName = async (name: string) =>
+  Zone.m
+    .find({
+      $text: {
+        $search: name,
+        $language: "english",
+        $caseSensitive: false,
+      },
+    })
+    .limit(props.search.maxResult)
+    .sort({ score: 1 })
+    .exec();
 
-export default { findAll, count, findById };
+const save = async (zone: Doc<TypeZone>) => zone.save();
+export default { findAll, count, findById, searchByName, save };

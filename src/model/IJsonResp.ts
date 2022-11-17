@@ -1,4 +1,4 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 
 export interface IJsonResp {
   readonly url: string;
@@ -9,6 +9,29 @@ export interface IJsonResp {
   readonly errors?: any;
 }
 
-export const sendJsonResp = (json: IJsonResp, res: Response) => {
-  res.json(json);
+export const sendJsonResp = (
+  json: IJsonResp,
+  res: Response,
+  httpStatus?: number
+) => {
+  res.status(httpStatus ?? 200).json(json);
+};
+
+export const sendDefaultResp = (
+  req: Request,
+  res: Response,
+  data: any,
+  status?: number
+) => {
+  res.status(status ?? 200).json(createBasicJson(req, data, status));
+};
+
+export const createBasicJson = (req: Request, data: any, status?: number) => {
+  return {
+    url: req.url,
+    method: req.method,
+    statusCode: status ?? 200,
+    timestamp: Date.now(),
+    data: data,
+  };
 };

@@ -2,6 +2,7 @@ import Zone, { TypeZone } from "../model/Zone";
 import ZoneRepo from "../repo/ZoneRepo";
 import PaginationUtility from "../utility/PaginationUtility";
 import ResourceUtility from "../utility/ResourceUtility";
+import { Doc } from "../utility/TsTypes";
 
 const zoneProp = Zone.properties;
 
@@ -16,7 +17,6 @@ const findAll = async (_pageIndex: number, _pageSize: number) => {
   const nbZones = await ZoneRepo.count();
   const nbPages = PaginationUtility.getMaxPage(nbZones, pageSize);
   const zonesData = ResourceUtility.addUrl(zones, zoneProp.url);
-
   return {
     zones: zonesData,
     nbRetrieved: zones.length,
@@ -26,10 +26,11 @@ const findAll = async (_pageIndex: number, _pageSize: number) => {
   };
 };
 
-const findById = async (_id: string) =>
-  ZoneRepo.findById(_id);
+const create = async (zone: Doc<TypeZone>) => {
+  return await ZoneRepo.save(zone);
+};
 
+const findById = async (_id: string) => ZoneRepo.findById(_id);
 
-
-
-export default { findAll, findById };
+const searchByName = async (name: string) => ZoneRepo.searchByName(name);
+export default { findAll, findById, create, searchByName };

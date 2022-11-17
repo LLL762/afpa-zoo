@@ -17,11 +17,11 @@ const checkTypeData = async (enclosure: Enclosure) => {
     .exec();
 
   if (!type) {
-    throw new CustomError("Ref type does not exist", {});
+    throw new CustomError("Ref type does not exist", 400, {});
   }
   const validate = new Ajv().compile(type.validationSchema);
   if (validate.errors) {
-    throw new CustomError("Ref type does not exist", validate.errors);
+    throw new CustomError("Ref type does not exist", 400, validate.errors);
   }
 };
 
@@ -31,7 +31,7 @@ const checkZone = async (enclosure: Enclosure) => {
   }
   const zone = await Zone.m.exists({ _id: enclosure.zone }).exec();
   if (!zone) {
-    throw new CustomError("Ref zone does not exist", {});
+    throw new CustomError("Ref zone does not exist", 400, {});
   }
 };
 

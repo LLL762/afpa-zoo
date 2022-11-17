@@ -10,4 +10,14 @@ const noFuture = (key: string) => key + " cannot be in the future";
 
 const validationSchema = (key: string) => key + "must be a valid json schema";
 
-export default { maxLength, minLength, required, noFuture, validationSchema };
+const betweenLength = (key: string, min: number, max: number) =>
+  `${key} must be between ${min} and ${max}`;
+
+export default {
+  maxLength,
+  minLength,
+  required,
+  noFuture,
+  validationSchema,
+  betweenLength,
+};
