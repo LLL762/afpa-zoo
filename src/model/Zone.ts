@@ -60,7 +60,6 @@ const schema = new Schema(
   { collection: "zones", timestamps: true }
 );
 
-schema.index({ name: "text" });
 export type TypeZone = InferSchemaType<typeof schema>;
 
 const m = model("Zone", schema);

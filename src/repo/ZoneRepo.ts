@@ -1,4 +1,5 @@
 import Zone, { TypeZone } from "../model/Zone";
+import RegexUtil from "../utility/RegexUtil";
 import { Doc } from "../utility/TsTypes";
 
 const props = Zone.properties;
@@ -16,14 +17,12 @@ const findById = async (id: string) => Zone.m.findById(id).orFail().exec();
 const searchByName = async (name: string) =>
   Zone.m
     .find({
-      $text: {
-        $search: name,
-        $language: "english",
-        $caseSensitive: false,
-      },
-    })
+      name: { $regex: RegexUtil.containsWordStartingBy(name), $options: "i" }
+    },
+      { _id: 1, name: 1 },
+    )
     .limit(props.search.maxResult)
-    .sort({ score: 1 })
+    .sort({ name: 1 })
     .exec();
 
 const save = async (zone: Doc<TypeZone>) => zone.save();

@@ -25,3 +25,5 @@ initRouter(router);
 
 app.use(router);
 app.use(GlobalErrorHandler.handle);
+
+

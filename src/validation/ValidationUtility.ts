@@ -29,12 +29,12 @@ const checkContentType = async (
   req.headers["content-type"] == "application/json"
     ? next()
     : next(
-        new BadRequestError("content-type must be application/json", {
-          type: "BadRequestError",
-          status: 400,
-          message: "Content type must be application/json",
-        })
-      );
+      new BadRequestError("content-type must be application/json", {
+        type: "BadRequestError",
+        status: 400,
+        message: "Content type must be application/json",
+      })
+    );
 };
 
 const checkSizeQueryParam = () =>
@@ -59,6 +59,7 @@ const checkPageQueryParams = () => [
   checkSizeQueryParam(),
   checkPageQueryParam(),
 ];
+
 
 export default {
   isValidJsonSchema,
