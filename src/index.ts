@@ -8,6 +8,7 @@ import cors from "cors";
 import GlobalErrorHandler from "./error/handler/GlobalErrorHandler";
 import { initRouter } from "./init/RouterInit";
 import ValidationUtility from "./validation/ValidationUtility";
+import EnclosureMock from "./test/mock-data/EnclosureMock";
 
 const app = express();
 const router = express.Router();
@@ -25,5 +26,3 @@ initRouter(router);
 
 app.use(router);
 app.use(GlobalErrorHandler.handle);
-
-

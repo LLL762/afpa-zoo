@@ -2,6 +2,7 @@ const URIS = {
   base: "/api",
   animals: "/animals",
   zones: "/zones",
+  enclosures: "/enclosures",
   search: "/search",
 } as const;
 

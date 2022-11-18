@@ -2,6 +2,7 @@ import { body, query } from "express-validator";
 import ValidationMsg from "../messages/ValidationMsg";
 import Zone from "../model/Zone";
 import ResourceValidator from "./ResourceValidator";
+import ValidationUtility from "./ValidationUtility";
 
 const props = Zone.properties;
 
@@ -56,4 +57,14 @@ const validatePut = () => [
 ];
 const validateSearch = () => [mustHaveNameQuery()];
 
-export default { validatePost, validatePut, validateSearch };
+const validateGetEnclosures = () => [
+  ResourceValidator.validateId(),
+  ValidationUtility.checkPageQueryParams(),
+];
+
+export default {
+  validatePost,
+  validatePut,
+  validateSearch,
+  validateGetEnclosures,
+};

@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { matchedData } from "express-validator";
 import { sendDefaultResp } from "../model/IJsonResp";
 import Zone from "../model/Zone";
+import EnclosureService from "../service/EnclosureService";
 import ZoneService from "../service/ZoneService";
 
 const getAll = async (req: Request, res: Response, next: NextFunction) => {
@@ -42,10 +43,30 @@ const search = async (req: Request, res: Response, next: NextFunction) => {
     const searchValue = req.query.name as string;
     const searchResult = await ZoneService.searchByName(searchValue);
     const data = { zones: searchResult, searchValue: searchValue };
-    sendDefaultResp(req, res, data, 200);
+    sendDefaultResp(req, res, data);
   } catch (error) {
     next(error);
   }
 };
 
-export default { getAll, getById, create, search };
+const getEnclosures = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const zoneId = req.params.id;
+    const pageIndex = req.query.page ? +req.query.page : NaN;
+    const pageSize = req.query.size ? +req.query.size : NaN;
+    const data = await EnclosureService.findByZoneId(
+      zoneId,
+      pageIndex,
+      pageSize
+    );
+    sendDefaultResp(req, res, data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { getAll, getById, create, search, getEnclosures };

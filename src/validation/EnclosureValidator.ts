@@ -1,10 +1,10 @@
 import Ajv from "ajv";
 import { CustomError } from "../error/CustomError";
-import { Enclosure } from "../model/Enclosure";
+import Enclosure, { TypeEnclosure } from "../model/Enclosure";
 import EnclosureType from "../model/EnclosureType";
 import Zone from "../model/Zone";
 
-const checkTypeData = async (enclosure: Enclosure) => {
+const checkTypeData = async (enclosure: TypeEnclosure) => {
   if (!(enclosure.type || enclosure.typeData)) {
     return;
   }
@@ -25,7 +25,7 @@ const checkTypeData = async (enclosure: Enclosure) => {
   }
 };
 
-const checkZone = async (enclosure: Enclosure) => {
+const checkZone = async (enclosure: TypeEnclosure) => {
   if (enclosure.zone) {
     return;
   }

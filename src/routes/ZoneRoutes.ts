@@ -45,6 +45,15 @@ const routes: IAppRoute[] = [
       ZoneController.search,
     ],
   },
+  {
+    method: "GET",
+    uri: URIS.zones + "/" + UriConfigs.PATHVARS.id + URIS.enclosures,
+    handlers: [
+      ZoneValidator.validateGetEnclosures(),
+      ResourceValidator.checkRequest,
+      ZoneController.getEnclosures,
+    ],
+  },
 ];
 
 export default { routes };

@@ -16,14 +16,16 @@ const count = async () => Zone.m.countDocuments().exec();
 const findById = async (id: string) => Zone.m.findById(id).orFail().exec();
 const searchByName = async (name: string) =>
   Zone.m
-    .find({
-      name: { $regex: RegexUtil.containsWordStartingBy(name), $options: "i" }
-    },
-      { _id: 1, name: 1 },
+    .find(
+      {
+        name: { $regex: RegexUtil.containsWordStartingBy(name), $options: "i" },
+      },
+      { _id: 1, name: 1 }
     )
     .limit(props.search.maxResult)
     .sort({ name: 1 })
     .exec();
 
 const save = async (zone: Doc<TypeZone>) => zone.save();
+
 export default { findAll, count, findById, searchByName, save };

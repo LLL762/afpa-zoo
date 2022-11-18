@@ -1,5 +1,4 @@
 import { InferSchemaType, model, Schema, Types } from "mongoose";
-import { CustomError } from "../error/CustomError";
 import ValidationMsg from "../messages/ValidationMsg";
 import EnclosureValidator from "../validation/EnclosureValidator";
 import GeoLocSchema from "./GeoLocSchema";
@@ -12,6 +11,10 @@ const properties = {
   description: {
     maxLength: 5000,
     minLength: 5,
+  },
+  page: {
+    size: 30,
+    maxSize: 100,
   },
 } as const;
 
@@ -70,7 +73,7 @@ schema.pre("save", async function (next) {
   next();
 });
 
-export type Enclosure = InferSchemaType<typeof schema>;
+export type TypeEnclosure = InferSchemaType<typeof schema>;
 
 const m = model("Enclosure", schema);
 
