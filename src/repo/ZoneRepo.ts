@@ -14,6 +14,9 @@ const findAll = async (pageIndex: number, pageSize: number) =>
 
 const count = async () => Zone.m.countDocuments().exec();
 const findById = async (id: string) => Zone.m.findById(id).orFail().exec();
+const findByName = async (name: string) =>
+  Zone.m.findOne({ name: name }, { _id: 1, name: 1 }).exec();
+
 const searchByName = async (name: string) =>
   Zone.m
     .find(
@@ -37,4 +40,12 @@ const update = async (zone: Doc<TypeZone>) =>
     .orFail()
     .exec();
 
-export default { findAll, count, findById, searchByName, save, update };
+export default {
+  findAll,
+  count,
+  findById,
+  searchByName,
+  save,
+  update,
+  findByName,
+};

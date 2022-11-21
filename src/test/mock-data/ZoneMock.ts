@@ -35,6 +35,8 @@ const data = [
 ] as const;
 
 const createData = () => JSON.parse(JSON.stringify(data)) as typeof data;
+const createOne = (index: number) =>
+  JSON.parse(JSON.stringify(data[index])) as typeof data;
 
 const util: IMockDataUtil = {
   insert: async function () {
@@ -45,4 +47,4 @@ const util: IMockDataUtil = {
   },
 } as const;
 
-export default { createData, util };
+export default { createData, createOne, util };

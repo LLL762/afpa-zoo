@@ -16,7 +16,7 @@ const handle = async (
     res.status(404).json({
       status: 404,
       url: req.url,
-      error: "Requested resource does not exist",
+      errors: "Requested resource does not exist",
     });
     return;
   }

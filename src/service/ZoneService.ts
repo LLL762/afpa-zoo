@@ -1,3 +1,5 @@
+import { UniqueKeyError } from "../error/UniqueKeyError";
+import ValidationMsg from "../messages/ValidationMsg";
 import Zone, { TypeZone } from "../model/Zone";
 import ZoneRepo from "../repo/ZoneRepo";
 import PaginationUtility from "../utility/PaginationUtility";
@@ -27,6 +29,16 @@ const findAll = async (_pageIndex: number, _pageSize: number) => {
 };
 
 const create = async (zone: Doc<TypeZone>) => {
+  const hasSameName = await ZoneRepo.findByName(zone.name);
+
+  if (hasSameName) {
+    const msg = ValidationMsg.alreadyTaken("name", zone.name);
+    const details = {};
+    const conflicts = "";
+
+    throw new UniqueKeyError("", 422);
+  }
+
   return await ZoneRepo.save(zone);
 };
 
