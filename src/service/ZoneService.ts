@@ -1,3 +1,4 @@
+import UriConfigs from "../configs/UriConfigs";
 import { UniqueKeyError } from "../error/UniqueKeyError";
 import ValidationMsg from "../messages/ValidationMsg";
 import Zone, { TypeZone } from "../model/Zone";
@@ -7,6 +8,7 @@ import ResourceUtility from "../utility/ResourceUtility";
 import { Doc } from "../utility/TsTypes";
 
 const zoneProp = Zone.properties;
+const URI = UriConfigs.URIS;
 
 const findAll = async (_pageIndex: number, _pageSize: number) => {
   const pageIndex = isNaN(_pageIndex) ? 1 : _pageIndex;
@@ -30,15 +32,9 @@ const findAll = async (_pageIndex: number, _pageSize: number) => {
 
 const create = async (zone: Doc<TypeZone>) => {
   const hasSameName = await ZoneRepo.findByName(zone.name);
-
   if (hasSameName) {
-    const msg = ValidationMsg.alreadyTaken("name", zone.name);
-    const details = {};
-    const conflicts = "";
-
-    throw new UniqueKeyError("", 422);
+    handleDuplicateName(hasSameName);
   }
-
   return await ZoneRepo.save(zone);
 };
 
@@ -52,5 +48,25 @@ const update = async (zone: Doc<TypeZone>) => {
     zone: upZone,
   };
 };
+
+
+const handleDuplicateName = (hasSameName: Doc<TypeZone>) => {
+
+  const msg = ValidationMsg.alreadyTaken("name", hasSameName.name);
+  const details = {
+    type: "UniqueKeyError",
+    message: msg,
+    conflicts: {
+      key: "name",
+      value: hasSameName.name,
+      url: URI.base + URI.zones + "/" + hasSameName._id
+    }
+  }
+  throw new UniqueKeyError(msg, details);
+}
+
+
+
+
 
 export default { findAll, findById, create, searchByName, update };

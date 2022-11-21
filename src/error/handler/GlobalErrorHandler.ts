@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { Error } from "mongoose";
+import ValidationMsg from "../../messages/ValidationMsg";
 import { sendJsonResp } from "../../model/IJsonResp";
 import { CustomError } from "../CustomError";
 
@@ -18,6 +19,25 @@ const handle = async (
       url: req.url,
       errors: "Requested resource does not exist",
     });
+    return;
+  }
+
+  if (err.name === "MongoServerError" && err.code === 11000) {
+
+    const json = {
+      url: req.url,
+      method: req.method,
+      statusCode: 400,
+      timestamp: Date.now(),
+      errors: {
+        type: "UniqueKeyError",
+        message: ValidationMsg.alreadyTaken(Object.keys(err.keyValue)[0], err.keyValue.name),
+        details: {
+        }
+      },
+    };
+
+    res.status(400).json(json);
     return;
   }
 
