@@ -16,6 +16,9 @@ const betweenLength = (key: string, min: number, max: number) =>
 const pageParam = (key: string) =>
   `Query parameter ${key} must be an integer greater or equal to 1`;
 
+const alreadyTaken = (key: string, value: string) =>
+  key + " " + value + " is already taken";
+
 const err = {
   contentType: "Content type must be application/json",
 } as const;
@@ -28,5 +31,6 @@ export default {
   validationSchema,
   betweenLength,
   pageParam,
+  alreadyTaken,
   err,
 };
