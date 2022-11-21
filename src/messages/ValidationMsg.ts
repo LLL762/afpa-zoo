@@ -13,6 +13,9 @@ const validationSchema = (key: string) => key + "must be a valid json schema";
 const betweenLength = (key: string, min: number, max: number) =>
   `${key} must be between ${min} and ${max}`;
 
+const pageParam = (key: string) =>
+  `Query parameter ${key} must be an integer greater or equal to 1`;
+
 const err = {
   contentType: "Content type must be application/json",
 } as const;
@@ -24,5 +27,6 @@ export default {
   noFuture,
   validationSchema,
   betweenLength,
+  pageParam,
   err,
 };

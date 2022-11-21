@@ -42,18 +42,14 @@ const checkSizeQueryParam = () =>
   query("size")
     .optional()
     .isInt({ min: 1 })
-    .withMessage(
-      "Query parameter size must be an integer greater or equal to 1"
-    )
+    .withMessage(ValidationMsg.pageParam("size"))
     .toInt();
 
 const checkPageQueryParam = () =>
   query("page")
     .optional()
     .isInt({ min: 1 })
-    .withMessage(
-      "Query parameter page must be an integer greater or equal to 1"
-    )
+    .withMessage(ValidationMsg.pageParam("page"))
     .toInt();
 
 const checkPageQueryParams = () => [

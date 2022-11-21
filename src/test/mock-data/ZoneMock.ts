@@ -34,6 +34,8 @@ const data = [
   },
 ] as const;
 
+const createData = () => JSON.parse(JSON.stringify(data)) as typeof data;
+
 const util: IMockDataUtil = {
   insert: async function () {
     await Zone.m.insertMany(data);
@@ -43,4 +45,4 @@ const util: IMockDataUtil = {
   },
 } as const;
 
-export default { data, util };
+export default { createData, util };
