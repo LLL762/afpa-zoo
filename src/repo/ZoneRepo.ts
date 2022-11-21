@@ -27,5 +27,14 @@ const searchByName = async (name: string) =>
     .exec();
 
 const save = async (zone: Doc<TypeZone>) => zone.save();
+const update = async (zone: Doc<TypeZone>) =>
+  Zone.m
+    .findByIdAndUpdate(
+      zone._id,
+      { $set: { name: zone.name, description: zone.description } },
+      { returnOriginal: false }
+    )
+    .orFail()
+    .exec();
 
-export default { findAll, count, findById, searchByName, save };
+export default { findAll, count, findById, searchByName, save, update };

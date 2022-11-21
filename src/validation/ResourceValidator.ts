@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { body, validationResult } from "express-validator";
+import { param, validationResult } from "express-validator";
 import { BadRequestError } from "../error/BadRequestError";
 import ValidationMsg from "../messages/ValidationMsg";
 const checkRequest = async (
@@ -20,13 +20,13 @@ const checkRequest = async (
 };
 
 const validateId = () => {
-  return body("_id")
+  return param("id")
     .not()
     .isEmpty()
-    .withMessage(ValidationMsg.required("_id"))
+    .withMessage(ValidationMsg.required("id parameter"))
     .bail()
     .isMongoId()
-    .withMessage("_id mus be a valid mongoId");
+    .withMessage("id paramater must be a valid mongoId");
 };
 
 export default { checkRequest, validateId };

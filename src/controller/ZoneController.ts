@@ -69,4 +69,18 @@ const getEnclosures = async (
   }
 };
 
-export default { getAll, getById, create, search, getEnclosures };
+const updateZone = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const zone = matchedData(req);
+    zone._id = req.params.id;
+
+    console.log(new Zone.m(zone));
+
+    const data = await ZoneService.update(new Zone.m(zone));
+    sendDefaultResp(req, res, data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { getAll, getById, create, search, getEnclosures, updateZone };

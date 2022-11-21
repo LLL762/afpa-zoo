@@ -50,11 +50,7 @@ const mustHaveNameQuery = () => {
 };
 
 const validatePost = () => [validateName(), validateDescription()];
-const validatePut = () => [
-  ResourceValidator.validateId(),
-  validateName(),
-  validateDescription(),
-];
+
 const validateSearch = () => [mustHaveNameQuery()];
 
 const validateGetEnclosures = () => [
@@ -62,9 +58,15 @@ const validateGetEnclosures = () => [
   ValidationUtility.checkPageQueryParams(),
 ];
 
+const validateUpdate = () => [
+  ResourceValidator.validateId(),
+  validateDescription(),
+  validateName(),
+];
+
 export default {
   validatePost,
-  validatePut,
   validateSearch,
   validateGetEnclosures,
+  validateUpdate,
 };

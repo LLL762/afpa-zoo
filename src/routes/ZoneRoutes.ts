@@ -28,6 +28,15 @@ const routes: IAppRoute[] = [
     ],
   },
   {
+    method: "PUT",
+    uri: URIS.zones + "/" + UriConfigs.PATHVARS.id,
+    handlers: [
+      ZoneValidator.validateUpdate(),
+      ResourceValidator.checkRequest,
+      ZoneController.updateZone,
+    ],
+  },
+  {
     method: "POST",
     uri: URIS.zones,
     handlers: [

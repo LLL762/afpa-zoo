@@ -33,4 +33,12 @@ const create = async (zone: Doc<TypeZone>) => {
 const findById = async (_id: string) => ZoneRepo.findById(_id);
 
 const searchByName = async (name: string) => ZoneRepo.searchByName(name);
-export default { findAll, findById, create, searchByName };
+
+const update = async (zone: Doc<TypeZone>) => {
+  const upZone = await ZoneRepo.update(zone);
+  return {
+    zone: upZone,
+  };
+};
+
+export default { findAll, findById, create, searchByName, update };
