@@ -1,4 +1,5 @@
-import Zone from "../../model/Zone";
+import Zone, { TypeZone } from "../../model/Zone";
+import { Doc } from "../../utility/TsTypes";
 import { IMockDataUtil } from "./IMockDataUtil";
 
 const data = [
@@ -36,7 +37,7 @@ const data = [
 
 const createData = () => JSON.parse(JSON.stringify(data)) as typeof data;
 const createOne = (index: number) =>
-  JSON.parse(JSON.stringify(data[index])) as typeof data;
+  JSON.parse(JSON.stringify(data[index])) as Doc<TypeZone>;
 
 const util: IMockDataUtil = {
   insert: async function () {
