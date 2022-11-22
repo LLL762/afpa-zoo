@@ -43,15 +43,17 @@ const findById = async (_id: string) => ZoneRepo.findById(_id);
 const searchByName = async (name: string) => ZoneRepo.searchByName(name);
 
 const update = async (zone: Doc<TypeZone>) => {
+  const hasSameName = await ZoneRepo.findByName(zone.name);
+  if (hasSameName) {
+    handleDuplicateName(hasSameName);
+  }
   const upZone = await ZoneRepo.update(zone);
   return {
     zone: upZone,
   };
 };
 
-
 const handleDuplicateName = (hasSameName: Doc<TypeZone>) => {
-
   const msg = ValidationMsg.alreadyTaken("name", hasSameName.name);
   const details = {
     type: "UniqueKeyError",
@@ -59,14 +61,10 @@ const handleDuplicateName = (hasSameName: Doc<TypeZone>) => {
     conflicts: {
       key: "name",
       value: hasSameName.name,
-      url: URI.base + URI.zones + "/" + hasSameName._id
-    }
-  }
+      url: URI.base + URI.zones + "/" + hasSameName._id,
+    },
+  };
   throw new UniqueKeyError(msg, details);
-}
-
-
-
-
+};
 
 export default { findAll, findById, create, searchByName, update };

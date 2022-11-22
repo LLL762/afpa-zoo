@@ -56,6 +56,11 @@ const schema = new Schema(
         ),
       ],
     },
+    status: {
+      type: String,
+      enum: ["OK", "HIDDEN", "DELETED"],
+      default: "OK",
+    },
   },
   { collection: "zones", timestamps: true }
 );

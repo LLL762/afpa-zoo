@@ -74,8 +74,6 @@ const updateZone = async (req: Request, res: Response, next: NextFunction) => {
     const zone = matchedData(req);
     zone._id = req.params.id;
 
-    console.log(new Zone.m(zone));
-
     const data = await ZoneService.update(new Zone.m(zone));
     sendDefaultResp(req, res, data);
   } catch (error) {
