@@ -1,10 +1,15 @@
 import { Router } from "express";
 import UriConfigs from "../configs/UriConfigs";
 import AnimalRoutes from "../routes/AnimalRoutes";
+import AuthRoutes from "../routes/AuthRoutes";
 import { IAppRoute } from "../routes/IRoute";
 import ZoneRoutes from "../routes/ZoneRoutes";
 
-const routesPack: IAppRoute[][] = [AnimalRoutes.routes, ZoneRoutes.routes];
+const routesPack: IAppRoute[][] = [
+  AnimalRoutes.routes,
+  ZoneRoutes.routes,
+  AuthRoutes.routes,
+];
 
 const setUpRoutes = (router: Router, routes: IAppRoute[]) => {
   routes.forEach((route) => {

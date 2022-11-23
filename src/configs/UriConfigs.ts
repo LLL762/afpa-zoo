@@ -4,6 +4,8 @@ const URIS = {
   zones: "/zones",
   enclosures: "/enclosures",
   search: "/search",
+  login: "/login",
+  refreshToken: "/refresh-token",
 } as const;
 
 const PATHVARS = {

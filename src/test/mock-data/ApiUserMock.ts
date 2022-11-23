@@ -1,9 +1,14 @@
+//password = ${username}3$7777
+
+import ApiUser from "../../model/ApiUser";
+import { IMockDataUtil } from "./IMockDataUtil";
+
 const data = [
   {
     username: "Arnold",
-    password: "arnold",
+    password: "$2a$10$TXQqEvZbYtRh2dLKC8MnI.QacZJK0Kc5tnSYiI.H27rvFurb1NeDC",
     email: "arnol@gmail.com",
-    firsname: "Arnold",
+    firstname: "Arnold",
     lastname: "Schwarz",
     job: {
       name: "Action superstar",
@@ -15,15 +20,36 @@ const data = [
   },
   {
     username: "Rebecca",
-    password: "rebecca",
+    password: "$2a$10$zERaiGKGzYaZ2TwSrfgTZusF2qKj0ScmZ.k.0lPlP.aV.r36K5bpq",
     email: "rebecca@gmail.com",
-    firsname: "Rebecca",
+    firstname: "Rebecca",
     lastname: "Roberts",
     job: {
       name: "veterinarian",
       description: "Veterinarians treat disease",
     },
     role: { name: "STAFF", accessLevel: 50 },
-    permissions: [],
+    permissions: [
+      {
+        type: "READ",
+        level: "private",
+        resource: "ZONE",
+        scope: "RESOURCE",
+        resources: ["507f1f77bcf86cd799439011", "507f1f77bcf86cd799439012"],
+      },
+    ],
   },
 ];
+
+const createData = () => JSON.parse(JSON.stringify(data)) as typeof data;
+
+const util: IMockDataUtil = {
+  insert: async function () {
+    await ApiUser.m.insertMany(data);
+  },
+  clean: async function () {
+    await ApiUser.m.deleteMany({}).exec();
+  },
+} as const;
+
+export default { util, createData };

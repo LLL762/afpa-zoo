@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { InferSchemaType, model, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 import validator from "validator";
 import ValidationMsg from "../messages/ValidationMsg";
@@ -79,6 +79,7 @@ const schema = new Schema(
       unique: true,
     },
     firstname: {
+      type: String,
       required: [true, ValidationMsg.required("firstname")],
       trim: true,
       maxlength: [
@@ -91,6 +92,7 @@ const schema = new Schema(
       ],
     },
     lastname: {
+      type: String,
       required: [true, ValidationMsg.required("lastname")],
       trim: true,
       maxlength: [
@@ -132,3 +134,8 @@ schema.pre("save", async function (next) {
   }
   next();
 });
+
+export type TypeApiUser = InferSchemaType<typeof schema>;
+const m = model("ApiUser", schema);
+
+export default { properties, m };

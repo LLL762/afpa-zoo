@@ -29,7 +29,6 @@ const schema = new Schema(
         values: properties.nameEnum,
         message: ValidationMsg.enumValue("name", properties.nameEnum),
       },
-      unique: true,
     },
   },
   { _id: false, timestamps: true }

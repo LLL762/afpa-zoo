@@ -9,6 +9,7 @@ import AnimalsMock from "../mock-data/AnimalsMock";
 import EnclosureMock from "../mock-data/EnclosureMock";
 import EnclosureTypeMock from "../mock-data/EnclosureTypeMock";
 import { IMockDataUtil } from "../mock-data/IMockDataUtil";
+import ApiUserMock from "../mock-data/ApiUserMock";
 
 let mongoServer: MongoMemoryServer | undefined;
 let uri: string;
@@ -20,6 +21,7 @@ const configs = {
     EnclosureMock.util,
     EnclosureTypeMock.util,
     ZoneMock.util,
+    ApiUserMock.util,
   ],
 } as const;
 

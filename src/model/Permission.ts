@@ -3,14 +3,14 @@ import Msg from "../messages/ValidationMsg";
 
 const properties = {
   type: {
-    values: ["READ, WRITE"],
+    values: ["READ", "WRITE"],
   },
   level: {
     public: 0,
     private: 1,
   },
   resource: {
-    values: ["ALL", "ZONE", "ENCLOSURE", "ANIMAL", "SPECIE"],
+    values: ["ALL", "ZONE", "ENCLOSURE", "ANIMAL", "SPECY"],
   },
   scope: {
     values: ["ALL", "RESOURCE"],
@@ -31,7 +31,7 @@ const schema = new Schema(
       type: String,
       required: [true, Msg.required("level")],
       enum: {
-        values: Object.values(properties.level),
+        values: Object.keys(properties.level),
         message: Msg.enumValue("level", Object.keys(properties.level)),
       },
     },

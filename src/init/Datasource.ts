@@ -1,5 +1,6 @@
-import mongoose, { models } from "mongoose";
+import mongoose from "mongoose";
 import Animal from "../model/Animal";
+import ApiUser from "../model/ApiUser";
 import Enclosure from "../model/Enclosure";
 import EnclosureType from "../model/EnclosureType";
 import Zone from "../model/Zone";
@@ -9,7 +10,7 @@ const configs = {
   user: process.env.DATASOURCE_USER as string,
   pass: process.env.DATASOURCE_PASSWORD as string,
   dbName: process.env.DATASOURCE_DB_NAME as string,
-  models: [Animal.m, Enclosure.m, EnclosureType.m, Zone.m],
+  models: [Animal.m, Enclosure.m, EnclosureType.m, Zone.m, ApiUser.m],
 } as const;
 
 const connect = async () => {

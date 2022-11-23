@@ -27,6 +27,7 @@ const schema = new Schema(
       ],
     },
     description: {
+      type: String,
       required: [true, Msg.required("description")],
       minLength: [
         properties.description.minLength,
