@@ -1,3 +1,5 @@
+import passport from "passport";
+import TokenFilter from "../auth/TokenFilter";
 import UriConfigs from "../configs/UriConfigs";
 import ZoneController from "../controller/ZoneController";
 import ResourceValidator from "../validation/ResourceValidator";
@@ -13,6 +15,7 @@ const routes: IAppRoute[] = [
     method: "GET",
     uri: URIS.zones,
     handlers: [
+      TokenFilter.filter,
       ValidationUtility.checkPageQueryParams(),
       ResourceValidator.checkRequest,
       ZoneController.getAll,

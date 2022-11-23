@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import UriConfigs from "../configs/UriConfigs";
 
 const secret = process.env.JWT_SECRET as string;
-const expirationInSeconds = +(process.env.JWT_EXPIRATION_SECOND ?? 3500);
+const expirationInSeconds = +(process.env.JWT_EXPIRATION_SECOND ?? 350);
 
 const options = {
   expiresIn: expirationInSeconds,

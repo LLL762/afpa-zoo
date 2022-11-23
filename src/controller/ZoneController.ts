@@ -7,6 +7,8 @@ import ZoneService from "../service/ZoneService";
 
 const getAll = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    console.log(req.user);
+
     const pageIndex = req.query.page ? +req.query.page : NaN;
     const pageSize = req.query.size ? +req.query.size : NaN;
     const data = await ZoneService.findAll(pageIndex, pageSize);
