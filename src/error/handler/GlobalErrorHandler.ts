@@ -23,7 +23,6 @@ const handle = async (
   }
 
   if (err.name === "MongoServerError" && err.code === 11000) {
-
     const json = {
       url: req.url,
       method: req.method,
@@ -31,9 +30,11 @@ const handle = async (
       timestamp: Date.now(),
       errors: {
         type: "UniqueKeyError",
-        message: ValidationMsg.alreadyTaken(Object.keys(err.keyValue)[0], err.keyValue.name),
-        details: {
-        }
+        message: ValidationMsg.alreadyTaken(
+          Object.keys(err.keyValue)[0],
+          err.keyValue.name
+        ),
+        details: {},
       },
     };
 

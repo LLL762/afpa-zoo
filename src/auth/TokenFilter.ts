@@ -41,4 +41,4 @@ const handleValidationResult = (
   next();
 };
 
-export default { strategy, filter };
+export default { strategy, filter, handleValidationResult };

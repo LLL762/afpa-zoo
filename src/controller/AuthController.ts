@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import passport from "passport";
 import Authentication from "../auth/Authentication";
+import { IJwtRefreshPayload } from "../jwt/JwtUtil";
 import { TypeApiUser } from "../model/ApiUser";
+import ApiUserRepo from "../repo/ApiUserRepo";
 import { Doc } from "../utility/TsTypes";
 
 const handleAuthRequest = async (
@@ -32,4 +34,18 @@ const handleAuthResult = (err: any, user: Doc<TypeApiUser>, res: Response) => {
     : Authentication.onFaillure(res);
 };
 
-export default { handleAuthRequest };
+const handleRefreshJwt = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const username = (req.user as IJwtRefreshPayload).username;
+    const user = await ApiUserRepo.findByUsername(username);
+    Authentication.onSuccess(res, user);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { handleAuthRequest, handleRefreshJwt };
