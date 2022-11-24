@@ -2,6 +2,7 @@ import { Router } from "express";
 import UriConfigs from "../configs/UriConfigs";
 import AnimalRoutes from "../routes/AnimalRoutes";
 import AuthRoutes from "../routes/AuthRoutes";
+import EnclosureRoutes from "../routes/EnclosureRoutes";
 import { IAppRoute } from "../routes/IRoute";
 import ZoneRoutes from "../routes/ZoneRoutes";
 
@@ -9,6 +10,7 @@ const routesPack: IAppRoute[][] = [
   AnimalRoutes.routes,
   ZoneRoutes.routes,
   AuthRoutes.routes,
+  EnclosureRoutes.routes
 ];
 
 const setUpRoutes = (router: Router, routes: IAppRoute[]) => {

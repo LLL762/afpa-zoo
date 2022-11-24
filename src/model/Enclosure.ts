@@ -77,4 +77,6 @@ export type TypeEnclosure = InferSchemaType<typeof schema>;
 
 const m = model("Enclosure", schema);
 
+
+
 export default { properties, m };

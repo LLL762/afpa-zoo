@@ -1,4 +1,8 @@
+import UriConfigs from "../configs/UriConfigs";
 import { Doc } from "./TsTypes";
+
+
+
 
 const addUrl = <T>(resources: Doc<T>[], resourceUri: string) => {
   const output = [];
@@ -13,4 +17,23 @@ const addUrl = <T>(resources: Doc<T>[], resourceUri: string) => {
   return output;
 };
 
-export default { addUrl };
+const addKey = (object: any, path: string, newValue: any) => {
+
+  if (typeof object == "undefined") {
+    return;
+  }
+  const stack = path.split(".");
+
+  while (stack.length > 1) {
+    object = object[stack.shift() as string];
+  };
+
+
+
+  object[stack.shift() as string] = newValue;
+
+};
+
+
+
+export default { addUrl, addKey };
