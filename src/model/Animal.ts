@@ -10,6 +10,10 @@ const properties = {
     maxLength: 5000,
     minLength: 5,
   },
+  page: {
+    size: 50,
+    maxSize: 100,
+  },
 } as const;
 
 const schema = new Schema(

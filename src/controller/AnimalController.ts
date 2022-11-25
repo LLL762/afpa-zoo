@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import UriConfigs from "../configs/UriConfigs";
 import Animal from "../model/Animal";
-import { IJsonResp } from "../model/IJsonResp";
+import { IJsonResp, sendDefaultResp } from "../model/IJsonResp";
+import AnimalService from "../service/AnimalService";
 
 const getAllHandler = async (
   req: Request,
@@ -9,22 +10,10 @@ const getAllHandler = async (
   next: NextFunction
 ) => {
   try {
-    const animals = await Animal.m.find({}).orFail().exec();
-    let data: any[] = [];
-
-    for (let animal of animals) {
-      data.push({
-        url: UriConfigs.URIS.base + UriConfigs.URIS.animals + "/" + animal._id,
-        resource: animal,
-      });
-    }
-
-    res.json({
-      url: req.url,
-      method: req.method,
-      statusCode: 200,
-      data: data,
-    } as IJsonResp);
+    const pageIndex = req.query.page ? +req.query.page : NaN;
+    const pageSize = req.query.size ? +req.query.size : NaN;
+    const data = await AnimalService.findAll(pageIndex, pageSize);
+    sendDefaultResp(req, res, data);
   } catch (err) {
     next(err);
   }

@@ -28,6 +28,9 @@ const alreadyTaken = (key: string, value: string) =>
 const enumValue = (key: string, enumValues: readonly string[]) =>
   `${key} must be one of ${enumValues.join(", ")}`;
 
+const maxSize = (key: string, max: number) =>
+  `${key} must have less than ${max} elemennts `;
+
 const weakPassword =
   "password : must contain at least 10 characters, 1 lowercase, 1 uppercase, 1 digits and 1 special";
 
@@ -54,4 +57,5 @@ export default {
   enumValue,
   err,
   noPast,
+  maxSize,
 };

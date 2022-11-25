@@ -12,6 +12,7 @@ const data = [
     fed: true,
     stimulated: true,
     observations: "Annoying",
+    enclosure: "507f1f77bcf86cd799439011",
   },
 ] as const;
 

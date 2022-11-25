@@ -20,30 +20,30 @@ const findAll = async (pageIndex: number, pageSize: number) =>
             localField: "zone",
             foreignField: "_id",
             as: "zone",
-            pipeline: [{ $project: { name: 1, _id: 1 } }]
-          }
+            pipeline: [{ $project: { name: 1, _id: 1 } }],
+          },
         },
-        { $unwind: { path: '$zone' } },
+        { $unwind: { path: "$zone" } },
         {
           $lookup: {
             from: "enclosuresTypes",
             localField: "type",
             foreignField: "_id",
             as: "type",
-            pipeline: [{ $project: { name: 1, _id: 1 } }]
-          }
+            pipeline: [{ $project: { name: 1, _id: 1 } }],
+          },
         },
-        { $unwind: { path: '$type', preserveNullAndEmptyArrays: true } }
+        { $unwind: { path: "$type", preserveNullAndEmptyArrays: true } },
       ],
-    })
+    });
 
-
-
-
-const findById = async (id: string) => Enclosure.m.findById(id)
-  .populate("zone", "_id name")
-  .populate("type", "_id name")
-  .orFail().exec();
+const findById = async (id: string) =>
+  Enclosure.m
+    .findById(id)
+    .populate("zone", "_id name")
+    .populate("type", "_id name")
+    .orFail()
+    .exec();
 
 const findByZoneId = async (
   zoneId: string,
@@ -62,6 +62,6 @@ const findByZoneId = async (
         { $project: projectionMin },
       ],
     });
-}
+};
 
 export default { findByZoneId, findAll, findById };
