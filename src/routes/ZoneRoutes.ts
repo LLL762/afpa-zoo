@@ -1,4 +1,3 @@
-import passport from "passport";
 import TokenFilter from "../auth/TokenFilter";
 import UriConfigs from "../configs/UriConfigs";
 import ZoneController from "../controller/ZoneController";

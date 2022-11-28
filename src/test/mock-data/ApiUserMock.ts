@@ -5,6 +5,7 @@ import { IMockDataUtil } from "./IMockDataUtil";
 
 const data = [
   {
+    _id: "637deb9f673cbfb479201d23",
     username: "Arnold",
     password: "$2a$10$TXQqEvZbYtRh2dLKC8MnI.QacZJK0Kc5tnSYiI.H27rvFurb1NeDC",
     email: "arnol@gmail.com",
@@ -19,6 +20,7 @@ const data = [
     zones: ["507f1f77bcf86cd799439014"],
   },
   {
+    _id: "637deb9f673cbfb479201d24",
     username: "Rebecca",
     password: "$2a$10$zERaiGKGzYaZ2TwSrfgTZusF2qKj0ScmZ.k.0lPlP.aV.r36K5bpq",
     email: "rebecca@gmail.com",

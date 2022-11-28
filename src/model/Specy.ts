@@ -1,4 +1,4 @@
-import { Schema, Types } from "mongoose";
+import { InferSchemaType, model, Schema, Types } from "mongoose";
 import ValidationMsg from "../messages/ValidationMsg";
 import Observation from "./Observation";
 
@@ -48,9 +48,18 @@ const schema = new Schema({
     ],
   },
   observations: {
-    type: [{ type: Observation.schema }],
+    type: [Observation.schema],
     validate: [
       (value: any[]) => value.length <= properties.observations.maxLength,
     ],
   },
+  sociable: Boolean,
+  dangerous: Boolean,
+  enclosures: [{ type: Types.ObjectId, ref: "Enclosure" }],
 });
+
+export type TypeSpecy = InferSchemaType<typeof schema>;
+
+const m = model("Specy", schema);
+
+export default { properties, m };

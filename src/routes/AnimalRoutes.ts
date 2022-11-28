@@ -12,7 +12,7 @@ const routes: IAppRoute[] = [
   },
   {
     method: "GET",
-    uri: URI + UriConfigs.PATHVARS.id,
+    uri: URI + "/" + UriConfigs.PATHVARS.id,
     handlers: [AnimalController.getByIdHandler],
   },
 ];

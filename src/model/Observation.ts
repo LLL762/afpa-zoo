@@ -25,7 +25,7 @@ const schema = new Schema(
     },
     author: {
       type: Types.ObjectId,
-      ref: ApiUser,
+      ref: "ApiUser",
       required: [true, Msg.required("author")],
     },
   },

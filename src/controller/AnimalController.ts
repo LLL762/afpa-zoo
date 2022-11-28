@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import UriConfigs from "../configs/UriConfigs";
 import Animal from "../model/Animal";
 import { IJsonResp, sendDefaultResp } from "../model/IJsonResp";
 import AnimalService from "../service/AnimalService";
@@ -25,14 +24,9 @@ const getByIdHandler = async (
   next: NextFunction
 ) => {
   try {
-    const animals = await Animal.m.find({ _id: req.params.id }).orFail().exec();
-
-    res.json({
-      url: req.url,
-      method: req.method,
-      statusCode: 200,
-      data: animals,
-    } as IJsonResp);
+    const id = req.params.id;
+    const data = await AnimalService.findById(id);
+    sendDefaultResp(req, res, data);
   } catch (err) {
     next(err);
   }

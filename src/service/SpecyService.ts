@@ -1,10 +1,11 @@
 import UriConfigs from "../configs/UriConfigs";
-import Animal from "../model/Animal";
+import Specy from "../model/Specy";
 import AnimalRepo from "../repo/AnimalRepo";
+import SpecyRepo from "../repo/SpecyRepo";
 import PaginationUtility from "../utility/PaginationUtility";
 
 const URIS = UriConfigs.URIS;
-const props = Animal.properties;
+const props = Specy.properties;
 
 const findAll = async (pageIndex: number, pageSize: number) => {
   const pIndex = isNaN(pageIndex) ? 1 : pageIndex;
@@ -13,28 +14,23 @@ const findAll = async (pageIndex: number, pageSize: number) => {
     props.page.size,
     props.page.maxSize
   );
-  const queryResult = await AnimalRepo.findAll(pIndex, pSize);
-  const animals = queryResult[0].animals;
-  const nbAnimals = queryResult[0].page[0].count;
+  const queryResult = await SpecyRepo.findAll(pIndex, pSize);
+  const species = queryResult[0].species;
+  const nbSpecies = queryResult[0].page[0].count;
 
-  console.log(queryResult);
+  const nbPages = PaginationUtility.getMaxPage(nbSpecies, pSize);
 
-  const nbPages = PaginationUtility.getMaxPage(nbAnimals, pSize);
-
-  for (let enclosure of animals) {
+  for (let enclosure of species) {
     enclosure.url = UriConfigs.getResourceUrl(enclosure, "animals");
   }
 
   return {
-    enclosures: animals,
-    nbRetreived: animals.length,
+    species: species,
+    nbRetreived: species.length,
     pageIndex: pIndex,
     pageSize: pSize,
     nbPages: nbPages,
   };
 };
-const findById = async (id: string) => {
-  return AnimalRepo.findById(id);
-};
 
-export default { findAll, findById };
+export default { findAll };

@@ -1,5 +1,6 @@
 import { InferSchemaType, model, Schema, Types } from "mongoose";
 import ValidationMsg from "../messages/ValidationMsg";
+import Observation from "./Observation";
 
 const properties = {
   name: {
@@ -7,8 +8,7 @@ const properties = {
     minLength: 1,
   },
   observations: {
-    maxLength: 5000,
-    minLength: 5,
+    maxLength: 5,
   },
   page: {
     size: 50,
@@ -34,22 +34,10 @@ const schema = new Schema(
     fed: Boolean,
     out: Boolean,
     stimulated: Boolean,
-    obervations: {
-      type: String,
-      trim: true,
-      maxlength: [
-        properties.observations.maxLength,
-        ValidationMsg.maxLength(
-          "observations",
-          properties.observations.maxLength
-        ),
-      ],
-      minlength: [
-        properties.observations.minLength,
-        ValidationMsg.minLength(
-          "observations",
-          properties.observations.minLength
-        ),
+    observations: {
+      type: [Observation.schema],
+      validate: [
+        (value: any[]) => value.length <= properties.observations.maxLength,
       ],
     },
     sexe: {
@@ -70,6 +58,7 @@ const schema = new Schema(
     imgUrl: {
       type: String,
     },
+    specy: { type: Types.ObjectId, ref: "Specy" },
   },
   { collection: "animals", timestamps: true }
 );

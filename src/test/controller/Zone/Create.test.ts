@@ -17,6 +17,8 @@ jest.mock("../../../service/ZoneService", () => ({
 }));
 
 beforeAll(() => {
+  console.log("Open");
+
   Server.init(app);
 });
 

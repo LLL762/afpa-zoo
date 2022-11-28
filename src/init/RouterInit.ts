@@ -4,13 +4,15 @@ import AnimalRoutes from "../routes/AnimalRoutes";
 import AuthRoutes from "../routes/AuthRoutes";
 import EnclosureRoutes from "../routes/EnclosureRoutes";
 import { IAppRoute } from "../routes/IRoute";
+import SpecyRoute from "../routes/SpecyRoute";
 import ZoneRoutes from "../routes/ZoneRoutes";
 
 const routesPack: IAppRoute[][] = [
   AnimalRoutes.routes,
   ZoneRoutes.routes,
   AuthRoutes.routes,
-  EnclosureRoutes.routes
+  EnclosureRoutes.routes,
+  SpecyRoute.routes,
 ];
 
 const setUpRoutes = (router: Router, routes: IAppRoute[]) => {
@@ -47,7 +49,11 @@ export const initRouter = (router: Router) => {
     setUpRoutes(router, routes);
   }
 
-  router.all("*", (req, res) => {
+  router.all("*", (req, res, next) => {
+    if (req.url.startsWith("/" + UriConfigs.URIS.docs)) {
+      return next();
+    }
+
     res.status(404).json({
       url: req.url,
       method: req.method,

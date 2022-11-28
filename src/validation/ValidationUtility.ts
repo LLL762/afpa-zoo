@@ -4,6 +4,7 @@ import Ajv from "ajv";
 import { param, query } from "express-validator";
 import { BadRequestError } from "../error/BadRequestError";
 import ValidationMsg from "../messages/ValidationMsg";
+import UriConfigs from "../configs/UriConfigs";
 
 const isValidJsonSchema = (json: object) => {
   try {
@@ -27,6 +28,13 @@ const checkContentType = async (
   res: Response,
   next: NextFunction
 ) => {
+  if (
+    req.url.startsWith("/" + UriConfigs.URIS.docs) ||
+    req.url.startsWith("/favicon.ico")
+  ) {
+    return next();
+  }
+
   req.headers["content-type"] == "application/json"
     ? next()
     : next(

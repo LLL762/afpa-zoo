@@ -9,22 +9,21 @@ const URIS = {
   search: "/search",
   login: "/login",
   refreshToken: "/refresh-token",
+  species: "/species",
+  observations: "/observations",
+  docs: "docs",
 } as const;
 
 const PATHVARS = {
   id: ":id",
 } as const;
 
-
 const getResourceUrl = <T>(resource: Doc<T>, key: keyof typeof URIS) => {
   return URIS.base + URIS[key] + "/" + resource._id;
-}
+};
 
 const getUrlFromId = <T>(resourceId: string, key: keyof typeof URIS) => {
   return URIS.base + URIS[key] + "/" + resourceId;
-}
-
-
-
+};
 
 export default { URIS, PATHVARS, getResourceUrl, getUrlFromId };
