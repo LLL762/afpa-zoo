@@ -44,6 +44,69 @@ const findById = async (id: string) =>
     .orFail()
     .exec();
 
+const findByEnclosure = async (enclosureId: string) => {
+  return Animal.m
+    .find({ enclosure: enclosureId })
+    .populate("specy", "_id name")
+    .exec();
+};
+
+const feedAnimalsByEnclosure = async (enclosureIds: string[]) => {
+  return Animal.m.updateMany(
+    { enclosure: { $in: enclosureIds } },
+    { $set: { feed: true } }
+  );
+};
+
+const feedAnimals = async (animalsId: string[]) => {
+  return Animal.m.updateMany(
+    { _id: { $in: animalsId } },
+    { $set: { feed: true } }
+  );
+};
+
+const stimulateAnimalsByEnclosure = async (enclosureIds: string[]) => {
+  return Animal.m.updateMany(
+    { enclosure: { $in: enclosureIds } },
+    { $set: { stimulated: true } }
+  );
+};
+
+const stimulateAnimals = async (animalsId: string[]) => {
+  return Animal.m.updateMany(
+    { _id: { $in: animalsId } },
+    { $set: { stimulated: true } }
+  );
+};
+
+const outAnimalsByEnclosure = async (enclosureIds: string[]) => {
+  return Animal.m.updateMany(
+    { enclosure: { $in: enclosureIds } },
+    { $set: { out: true } }
+  );
+};
+
+const outAnimals = async (animalsId: string[]) => {
+  return Animal.m.updateMany(
+    { _id: { $in: animalsId } },
+    { $set: { out: true } }
+  );
+};
+
+const inAnimalsByEnclosure = async (enclosureIds: string[]) => {
+  return Animal.m.updateMany(
+    { enclosure: { $in: enclosureIds } },
+    { $set: { out: false } }
+  );
+};
+
+const inAnimals = async (animalsId: string[]) => {
+  return Animal.m.updateMany(
+    { _id: { $in: animalsId } },
+    { $set: { out: false } }
+  );
+};
+
 const getObservations = async (
   pageIndex: number,
   pageSize: number,
@@ -52,4 +115,16 @@ const getObservations = async (
   return Animal.m.aggregate();
 };
 
-export default { findAll, findById };
+export default {
+  findAll,
+  findById,
+  findByEnclosure,
+  feedAnimals,
+  feedAnimalsByEnclosure,
+  stimulateAnimals,
+  stimulateAnimalsByEnclosure,
+  outAnimals,
+  outAnimalsByEnclosure,
+  inAnimals,
+  inAnimalsByEnclosure,
+};

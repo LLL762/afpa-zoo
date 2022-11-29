@@ -12,6 +12,7 @@ const URIS = {
   species: "/species",
   observations: "/observations",
   docs: "docs",
+  tasks: "/tasks",
 } as const;
 
 const PATHVARS = {

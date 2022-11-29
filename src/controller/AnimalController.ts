@@ -26,6 +26,7 @@ const getByIdHandler = async (
   try {
     const id = req.params.id;
     const data = await AnimalService.findById(id);
+
     sendDefaultResp(req, res, data);
   } catch (err) {
     next(err);

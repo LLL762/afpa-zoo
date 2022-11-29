@@ -5,6 +5,7 @@ import AuthRoutes from "../routes/AuthRoutes";
 import EnclosureRoutes from "../routes/EnclosureRoutes";
 import { IAppRoute } from "../routes/IRoute";
 import SpecyRoute from "../routes/SpecyRoute";
+import TasksRoutes from "../routes/TasksRoutes";
 import ZoneRoutes from "../routes/ZoneRoutes";
 
 const routesPack: IAppRoute[][] = [
@@ -13,6 +14,7 @@ const routesPack: IAppRoute[][] = [
   AuthRoutes.routes,
   EnclosureRoutes.routes,
   SpecyRoute.routes,
+  TasksRoutes.routes,
 ];
 
 const setUpRoutes = (router: Router, routes: IAppRoute[]) => {

@@ -42,4 +42,26 @@ const lookUpEnclosures = {
   },
 };
 
-export default { lookUpEnclosure, lookUpEnclosures };
+const lookUpAnimals = {
+  $lookup: {
+    from: "animals",
+    localField: "animals",
+    foreignField: "_id",
+    as: "animals",
+    pipeline: [
+      {
+        $lookup: {
+          from: "enclosure",
+          localField: "enclosures",
+          foreignField: "_id",
+          as: "enclosure",
+          pipeline: [{ $project: { name: 1, _id: 1 } }],
+        },
+      },
+      { $project: { name: 1, _id: 1 } },
+      { $unwind: { path: "$enclosure", preserveNullAndEmptyArrays: true } },
+    ],
+  },
+};
+
+export default { lookUpEnclosure, lookUpEnclosures, lookUpAnimals };
