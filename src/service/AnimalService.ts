@@ -37,4 +37,18 @@ const findById = async (id: string) => {
   return AnimalRepo.findById(id);
 };
 
-export default { findAll, findById };
+const existAnimals = async (ids: string[]): Promise<string[]> => {
+  const dbAnimals = await AnimalRepo.findByIdIn(ids);
+
+  if (ids.length == dbAnimals.length) {
+    return [];
+  }
+  const dbUsersId = dbAnimals.map((animal) => animal._id.toString());
+  console.log(ids);
+
+  const notIn = ids.filter((id) => !dbUsersId.includes(id));
+
+  return notIn;
+};
+
+export default { findAll, findById, existAnimals };

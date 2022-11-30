@@ -17,6 +17,11 @@ const findById = async (id: string) => Zone.m.findById(id).orFail().exec();
 const findByName = async (name: string) =>
   Zone.m.findOne({ name: name }, { _id: 1, name: 1 }).exec();
 
+const findByIdIn = async (ids: string[], projection?: Object) => {
+  const project = projection ?? { _id: 1 };
+  return Zone.m.find({ _id: { $in: ids } }, project).exec();
+};
+
 const searchByName = async (name: string) =>
   Zone.m
     .find(
@@ -48,4 +53,5 @@ export default {
   save,
   update,
   findByName,
+  findByIdIn,
 };

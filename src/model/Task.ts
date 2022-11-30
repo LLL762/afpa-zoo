@@ -112,9 +112,26 @@ schema.post("validate", (doc, next) => {
   return next();
 });
 
-schema.post("save", (doc, next) => {
+schema.pre("findOneAndUpdate", async function (next) {
+  try {
+    const update = this.getUpdate() as any;
+    const filter = this.getFilter() as any;
+
+    await TaskHook.onAddAssignTo(update);
+    await TaskHook.onAddAnimals(update);
+    await TaskHook.onAddEnclosure(update);
+    TaskHook.onDonePre(update);
+    console.log(update);
+
+    return next();
+  } catch (error) {
+    return next(error as Error);
+  }
+});
+
+schema.post("findOneAndUpdate", (doc, next) => {
   if (doc.isModified("status") && doc.status == "DONE") {
-    TaskHook.onStatusUpdate(doc);
+    TaskHook.onDonePost(doc);
   }
   return next();
 });

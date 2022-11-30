@@ -1,8 +1,21 @@
-import { Types } from "mongoose";
+import { Error } from "mongoose";
 import AnimalRepo from "../../repo/AnimalRepo";
+import AnimalService from "../../service/AnimalService";
+import ApiUserService from "../../service/ApiUserService";
+import EnclosureService from "../../service/EnclosureService";
+import { Doc } from "../../utility/TsTypes";
 import { TypeTask } from "../Task";
 
-const onStatusUpdate = (task: TypeTask) => {
+const onDonePre = (updateObj: any) => {
+  const status = updateObj.status;
+  if (status == "DONE") {
+    updateObj.resolvedAt = Date.now();
+  } else {
+    updateObj.$unset = { resolvedAt: 1 };
+  }
+};
+
+const onDonePost = (task: Doc<TypeTask>) => {
   if (!task.type) {
     return;
   }
@@ -36,6 +49,49 @@ const onStatusUpdate = (task: TypeTask) => {
   }
 };
 
+const onAddAssignTo = async (updateObj: any) => {
+  if (!updateObj?.$addToSet?.assignTo) {
+    return;
+  }
+  const userIds = mapToString(updateObj.$addToSet.assignTo.$each);
+  const doNotExist = await ApiUserService.existApiUsers(userIds);
+  if (doNotExist.length > 0) {
+    throw new Error.ValidationError();
+  }
+};
+
+const onAddCreatedBy = async (task: Doc<TypeTask>) => {
+  const id = task.createdBy.toString();
+  const exist = await ApiUserService.existById(id);
+  if (!exist) {
+    throw new Error.ValidationError();
+  }
+};
+
+const onAddAnimals = async (updateObj: any) => {
+  if (!updateObj?.$addToSet?.animals) {
+    return;
+  }
+  const animalIds = mapToString(updateObj.$addToSet.animals.$each);
+  const doNotExist = await AnimalService.existAnimals(animalIds);
+
+  if (doNotExist.length > 0) {
+    throw new Error.ValidationError();
+  }
+};
+
+const onAddEnclosure = async (updateObj: any) => {
+  if (!updateObj?.$addToSet?.enclosures) {
+    return;
+  }
+
+  const enclosureIds = mapToString(updateObj.$addToSet.enclosures.$each);
+  const doNotExist = await EnclosureService.existsEnclosures(enclosureIds);
+  if (doNotExist.length > 0) {
+    throw new Error.ValidationError();
+  }
+};
+
 const mapToString = (ids?: any[]): string[] => {
   if (!ids || ids.length == 0) {
     throw new Error("");
@@ -43,4 +99,10 @@ const mapToString = (ids?: any[]): string[] => {
   return ids.map((id) => id.toString());
 };
 
-export default { onStatusUpdate };
+export default {
+  onDonePost,
+  onDonePre,
+  onAddAssignTo,
+  onAddAnimals,
+  onAddEnclosure,
+};

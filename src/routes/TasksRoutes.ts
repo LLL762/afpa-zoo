@@ -1,15 +1,63 @@
 import UriConfigs from "../configs/UriConfigs";
-import SpecyController from "../controller/SpecyController";
 import TaskController from "../controller/TaskController";
 import { IAppRoute } from "./IRoute";
 
 const URIS = UriConfigs.URIS;
+const PATH_VARS = UriConfigs.PATHVARS;
 
 const routes: IAppRoute[] = [
   {
     method: "GET",
     uri: URIS.tasks,
     handlers: [TaskController.getAll],
+  },
+  {
+    method: "GET",
+    uri: URIS.tasks + "/" + UriConfigs.PATHVARS.id,
+    handlers: [TaskController.getById],
+  },
+  {
+    method: "PUT",
+    uri: URIS.tasks + "/" + UriConfigs.PATHVARS.id,
+    handlers: [TaskController.update],
+  },
+  {
+    method: "PATCH",
+    uri: URIS.tasks + "/" + UriConfigs.PATHVARS.id + URIS.assignTo,
+    handlers: [TaskController.addAssignTo],
+  },
+  {
+    method: "DELETE",
+    uri:
+      URIS.tasks + "/" + PATH_VARS.id + URIS.assignTo + "/" + PATH_VARS.userId,
+    handlers: [TaskController.removeAssignTo],
+  },
+  {
+    method: "PATCH",
+    uri: URIS.tasks + "/" + UriConfigs.PATHVARS.id + URIS.animals,
+    handlers: [TaskController.addAnimals],
+  },
+  {
+    method: "DELETE",
+    uri:
+      URIS.tasks + "/" + PATH_VARS.id + URIS.animals + "/" + PATH_VARS.animalId,
+    handlers: [TaskController.removeAnimal],
+  },
+  {
+    method: "PATCH",
+    uri: URIS.tasks + "/" + UriConfigs.PATHVARS.id + URIS.enclosures,
+    handlers: [TaskController.addEnclosures],
+  },
+  {
+    method: "DELETE",
+    uri:
+      URIS.tasks +
+      "/" +
+      PATH_VARS.id +
+      URIS.enclosures +
+      "/" +
+      PATH_VARS.enclosureId,
+    handlers: [TaskController.removeEnclosure],
   },
 ];
 

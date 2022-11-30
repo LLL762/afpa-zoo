@@ -45,6 +45,11 @@ const findById = async (id: string) =>
     .orFail()
     .exec();
 
+const findByIdIn = async (ids: string[], projection?: Object) => {
+  const project = projection ?? { _id: 1 };
+  return Enclosure.m.find({ _id: { $in: ids } }, project).exec();
+};
+
 const findByZoneId = async (
   zoneId: string,
   pageIndex: number,
@@ -64,4 +69,4 @@ const findByZoneId = async (
     });
 };
 
-export default { findByZoneId, findAll, findById };
+export default { findByZoneId, findAll, findById, findByIdIn };

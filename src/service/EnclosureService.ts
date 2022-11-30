@@ -44,6 +44,20 @@ const findById = async (id: string) => {
   return enclosureCopy;
 };
 
+const existsEnclosures = async (ids: string[]): Promise<string[]> => {
+  const dbEnclosures = await EnclosureRepo.findByIdIn(ids);
+
+  if (ids.length == dbEnclosures.length) {
+    return [];
+  }
+  const dbEnclosuresId = dbEnclosures.map((enclosure) =>
+    enclosure._id.toString()
+  );
+  const notIn = ids.filter((id) => !dbEnclosuresId.includes(id));
+
+  return notIn;
+};
+
 const findByZoneId = async (
   zoneId: string,
   pageIndex: number,
@@ -85,4 +99,4 @@ const addUrls = (enclosure: any) => {
   }
 };
 
-export default { findAll, findByZoneId, findById };
+export default { findAll, findByZoneId, findById, existsEnclosures };

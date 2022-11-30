@@ -13,10 +13,14 @@ const URIS = {
   observations: "/observations",
   docs: "docs",
   tasks: "/tasks",
+  assignTo: "/assignTo",
 } as const;
 
 const PATHVARS = {
   id: ":id",
+  userId: ":userId",
+  animalId: ":animalId",
+  enclosureId: ":enclosureId",
 } as const;
 
 const getResourceUrl = <T>(resource: Doc<T>, key: keyof typeof URIS) => {

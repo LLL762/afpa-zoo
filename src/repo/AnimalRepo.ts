@@ -44,6 +44,11 @@ const findById = async (id: string) =>
     .orFail()
     .exec();
 
+const findByIdIn = async (ids: string[], projection?: Object) => {
+  const project = projection ?? { _id: 1 };
+  return Animal.m.find({ id: { $in: ids } }, project).exec();
+};
+
 const findByEnclosure = async (enclosureId: string) => {
   return Animal.m
     .find({ enclosure: enclosureId })
@@ -118,6 +123,7 @@ const getObservations = async (
 export default {
   findAll,
   findById,
+  findByIdIn,
   findByEnclosure,
   feedAnimals,
   feedAnimalsByEnclosure,

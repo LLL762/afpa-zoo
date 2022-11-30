@@ -40,6 +40,18 @@ const create = async (zone: Doc<TypeZone>) => {
 
 const findById = async (_id: string) => ZoneRepo.findById(_id);
 
+const existsZones = async (ids: string[]): Promise<string[]> => {
+  const dbZones = await ZoneRepo.findByIdIn(ids);
+
+  if (ids.length == dbZones.length) {
+    return [];
+  }
+  const dbZonesId = dbZones.map((zone) => zone._id.toString());
+  const notIn = ids.filter((id) => !dbZonesId.includes(id));
+
+  return notIn;
+};
+
 const searchByName = async (name: string) => ZoneRepo.searchByName(name);
 
 const update = async (zone: Doc<TypeZone>) => {
@@ -67,4 +79,4 @@ const handleDuplicateName = (hasSameName: Doc<TypeZone>) => {
   throw new UniqueKeyError(msg, details);
 };
 
-export default { findAll, findById, create, searchByName, update };
+export default { findAll, findById, create, searchByName, update, existsZones };

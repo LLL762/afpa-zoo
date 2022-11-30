@@ -24,6 +24,7 @@ const data = [
     createdBy: "637deb9f673cbfb479201d23",
     assignTo: ["637deb9f673cbfb479201d23", "637deb9f673cbfb479201d24"],
     animals: ["507f1f77bcf86cd799439011"],
+    resolvedAt: "2022-01-22T14:56:59.301Z",
   },
   {
     _id: "507f1f77bcf86cd799439013",

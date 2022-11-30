@@ -64,4 +64,30 @@ const lookUpAnimals = {
   },
 };
 
-export default { lookUpEnclosure, lookUpEnclosures, lookUpAnimals };
+const lookUpApiUserFn = (localField: string) => {
+  return {
+    $lookup: {
+      from: "apiUsers",
+      localField: localField,
+      foreignField: "_id",
+      as: localField,
+      pipeline: [
+        {
+          $project: {
+            lastname: 1,
+            firstname: 1,
+            _id: 1,
+            job: { name: "$job.name" },
+          },
+        },
+      ],
+    },
+  };
+};
+
+export default {
+  lookUpEnclosure,
+  lookUpEnclosures,
+  lookUpAnimals,
+  lookUpApiUserFn,
+};
