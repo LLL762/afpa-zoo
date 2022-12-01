@@ -41,7 +41,7 @@ const findById = (id: string) => {
     .exec();
 };
 
-const saveTask = async (task: Doc<TypeTask>) => {
+const save = async (task: Doc<TypeTask>) => {
   return task.save();
 };
 
@@ -145,7 +145,7 @@ export default {
   findAll,
   findById,
   editTask,
-  saveTask,
+  save,
   addAssignTo,
   removeAssignTo,
   addAnimals,

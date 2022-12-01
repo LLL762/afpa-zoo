@@ -16,6 +16,10 @@ const noFuture = (key: string) => key + " cannot be in the future";
 
 const validationSchema = (key: string) => key + "must be a valid json schema";
 
+const nbBetween = (key: string, min: number, max: number) => {
+  return key + `must a number between ${min} and ${max}`;
+};
+
 const betweenLength = (key: string, min: number, max: number) =>
   `${key} must be between ${min} and ${max}`;
 
@@ -30,6 +34,10 @@ const enumValue = (key: string, enumValues: readonly string[]) =>
 
 const maxSize = (key: string, max: number) =>
   `${key} must have less than ${max} elemennts `;
+
+const containMongoId = (key: string) => {
+  return key + " : all items must be valid mongo id";
+};
 
 const weakPassword =
   "password : must contain at least 10 characters, 1 lowercase, 1 uppercase, 1 digits and 1 special";
@@ -58,4 +66,6 @@ export default {
   err,
   noPast,
   maxSize,
+  nbBetween,
+  containMongoId,
 };

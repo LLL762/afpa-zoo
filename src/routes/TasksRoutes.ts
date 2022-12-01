@@ -1,5 +1,7 @@
 import UriConfigs from "../configs/UriConfigs";
 import TaskController from "../controller/TaskController";
+import ResourceValidator from "../validation/ResourceValidator";
+import TaskValidator from "../validation/TaskValidator";
 import { IAppRoute } from "./IRoute";
 
 const URIS = UriConfigs.URIS;
@@ -15,6 +17,15 @@ const routes: IAppRoute[] = [
     method: "GET",
     uri: URIS.tasks + "/" + UriConfigs.PATHVARS.id,
     handlers: [TaskController.getById],
+  },
+  {
+    method: "POST",
+    uri: URIS.tasks,
+    handlers: [
+      TaskValidator.validatePost(),
+      ResourceValidator.checkRequest,
+      TaskController.postHandler,
+    ],
   },
   {
     method: "PUT",

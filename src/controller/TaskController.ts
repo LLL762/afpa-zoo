@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { matchedData } from "express-validator";
 import { Types } from "mongoose";
 import { sendDefaultResp } from "../model/IJsonResp";
 import Task from "../model/Task";
@@ -19,6 +20,16 @@ const getById = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = req.params.id;
     const data = await TaskService.findById(id);
+    sendDefaultResp(req, res, data);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const postHandler = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const task = new Task.m(matchedData(req));
+    const data = await TaskService.createTask(task);
     sendDefaultResp(req, res, data);
   } catch (err) {
     next(err);
@@ -125,6 +136,7 @@ const removeEnclosure = async (
 export default {
   getAll,
   getById,
+  postHandler,
   update,
   addAssignTo,
   removeAssignTo,

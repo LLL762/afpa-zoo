@@ -11,7 +11,9 @@ const onDonePre = (updateObj: any) => {
   if (status == "DONE") {
     updateObj.resolvedAt = Date.now();
   } else {
-    updateObj.$unset = { resolvedAt: 1 };
+    updateObj.$unset
+      ? (updateObj.$unset.resolvedAt = 1)
+      : (updateObj.$unset = { resolvedAt: 1 });
   }
 };
 

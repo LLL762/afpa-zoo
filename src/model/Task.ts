@@ -1,6 +1,5 @@
 import { Error, InferSchemaType, model, Schema, Types } from "mongoose";
 import Msg from "../messages/ValidationMsg";
-import TaskValidator from "../validation/TaskValidator";
 import TaskHook from "./model-hooks/TaskHook";
 
 const properties = {
@@ -32,6 +31,12 @@ const properties = {
       "ENCLOSURE_OUT",
       "ENCLOSURE_IN",
     ],
+  },
+  animals: {
+    max: 100,
+  },
+  enclosures: {
+    max: 25,
   },
   page: {
     size: 15,
@@ -92,6 +97,7 @@ const schema = new Schema(
         properties.priority.min,
         Msg.min("priority", properties.priority.min),
       ],
+      default: 0,
     },
     createdBy: {
       type: Types.ObjectId,
@@ -105,12 +111,12 @@ const schema = new Schema(
   { collection: "tasks", timestamps: true }
 );
 
-schema.post("validate", (doc, next) => {
-  if (!TaskValidator.validateTypeResource(doc)) {
-    return next(new Error.ValidationError());
-  }
-  return next();
-});
+// schema.post("validate", (doc, next) => {
+//   if (!TaskValidator.validateTypeResource(doc)) {
+//     return next(new Error.ValidationError());
+//   }
+//   return next();
+// });
 
 schema.pre("findOneAndUpdate", async function (next) {
   try {

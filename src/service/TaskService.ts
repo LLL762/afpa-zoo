@@ -39,6 +39,10 @@ const findById = async (id: string) => {
   return TaskRepo.findById(id);
 };
 
+const createTask = async (newTask: Doc<TypeTask>) => {
+  return TaskRepo.save(newTask);
+};
+
 const editTask = async (task: Doc<TypeTask>) => {
   return TaskRepo.editTask(task);
 };
@@ -70,6 +74,7 @@ const removeEnclosure = async (taskId: string, enclosureId: string) => {
 export default {
   findAll,
   findById,
+  createTask,
   editTask,
   addAssignTo,
   removeAssignTo,
