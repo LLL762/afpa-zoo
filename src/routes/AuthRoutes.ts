@@ -10,11 +10,13 @@ const routes: IAppRoute[] = [
     method: "POST",
     uri: URIS.login,
     handlers: [AuthController.handleAuthRequest],
+    needAuth: false,
   },
   {
     method: "POST",
     uri: URIS.refreshToken,
     handlers: [JwtRefresh.filter, AuthController.handleRefreshJwt],
+    needAuth: false,
   },
 ];
 

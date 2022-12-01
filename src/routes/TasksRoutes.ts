@@ -11,6 +11,10 @@ const PATH_VARS = UriConfigs.PATHVARS;
 const routes: IAppRoute[] = [
   {
     method: "GET",
+    role: {
+      name: "ADMIN",
+      highter: true,
+    },
     uri: URIS.tasks,
     handlers: [TaskController.getAll],
   },

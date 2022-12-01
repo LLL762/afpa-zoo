@@ -4,8 +4,8 @@ import Role from "../model/Role";
 
 const props = Permission.properties;
 const roleProps = Role.properties;
-type PermLevelValue = keyof typeof props.level;
-type RoleNameValue = keyof typeof roleProps.name;
+export type PermLevelValue = keyof typeof props.level;
+export type RoleNameValue = keyof typeof roleProps.name;
 
 const comparePermLevel = (actual: PermLevelValue, expected: PermLevelValue) => {
   return props.level[actual] >= props.level[expected];
@@ -18,16 +18,18 @@ const hasRole = (
 ) => {
   const userRole = payload.role?.name;
 
+  console.log(userRole);
+
   if (
     !userRole ||
     userRole.length === 0 ||
-    Object.keys(roleProps.name).includes(userRole)
+    !Object.keys(roleProps.name).includes(userRole)
   ) {
     return false;
   }
 
   return (
-    userRole == roleName ||
+    (userRole as RoleNameValue) == roleName ||
     (orHighter &&
       roleProps.name[userRole as RoleNameValue] > roleProps.name[roleName])
   );
