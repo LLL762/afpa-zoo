@@ -62,14 +62,6 @@ const onAddAssignTo = async (updateObj: any) => {
   }
 };
 
-const onAddCreatedBy = async (task: Doc<TypeTask>) => {
-  const id = task.createdBy.toString();
-  const exist = await ApiUserService.existById(id);
-  if (!exist) {
-    throw new Error.ValidationError();
-  }
-};
-
 const onAddAnimals = async (updateObj: any) => {
   if (!updateObj?.$addToSet?.animals) {
     return;

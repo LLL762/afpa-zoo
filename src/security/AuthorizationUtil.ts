@@ -1,15 +1,36 @@
 import { IJwtPayload } from "../jwt/JwtUtil";
 import Permission, { TypePermission } from "../model/Permission";
+import Role from "../model/Role";
 
 const props = Permission.properties;
+const roleProps = Role.properties;
 type PermLevelValue = keyof typeof props.level;
+type RoleNameValue = keyof typeof roleProps.name;
 
 const comparePermLevel = (actual: PermLevelValue, expected: PermLevelValue) => {
   return props.level[actual] >= props.level[expected];
 };
 
-const hasRole = (roleName: string, payload: IJwtPayload) => {
-  return payload.role?.name == roleName;
+const hasRole = (
+  roleName: RoleNameValue,
+  payload: IJwtPayload,
+  orHighter: boolean
+) => {
+  const userRole = payload.role?.name;
+
+  if (
+    !userRole ||
+    userRole.length === 0 ||
+    Object.keys(roleProps.name).includes(userRole)
+  ) {
+    return false;
+  }
+
+  return (
+    userRole == roleName ||
+    (orHighter &&
+      roleProps.name[userRole as RoleNameValue] > roleProps.name[roleName])
+  );
 };
 
 const hasAccessLevel = (accessLevel: number, payload: IJwtPayload) => {

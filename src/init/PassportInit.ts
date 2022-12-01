@@ -5,8 +5,8 @@ import TokenFilter from "../auth/TokenFilter";
 
 const init = () => {
   passport.use(Authentication.strategy);
-  passport.use(TokenFilter.strategy);
-  passport.use(JwtRefresh.strategy);
+  passport.use("jwt", TokenFilter.strategy);
+  passport.use("jwt-refresh", JwtRefresh.strategy);
 };
 
 export default { init };

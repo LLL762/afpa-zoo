@@ -15,8 +15,11 @@ const strategy = new Strategy(
 );
 
 const filter = async (req: Request, res: Response, next: NextFunction) => {
-  await passport.authenticate("jwt", { session: false }, (err, payload, info) =>
-    TokenFilter.handleValidationResult(err, payload, info, req, next)
+  await passport.authenticate(
+    "jwt-refresh",
+    { session: false },
+    (err, payload, info) =>
+      TokenFilter.handleValidationResult(err, payload, info, req, next)
   )(req, res, next);
 };
 

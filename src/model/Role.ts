@@ -2,10 +2,15 @@ import { InferSchemaType, Schema } from "mongoose";
 import ValidationMsg from "../messages/ValidationMsg";
 
 const properties = {
-  nameEnum: ["GOD", "ADMIN", "STAFF", "TRASH"],
   accessLevel: {
     min: 0,
     max: 100,
+  },
+  name: {
+    TRASH: 0,
+    STAFF: 10,
+    ADMIN: 20,
+    GOD: 1000,
   },
 } as const;
 
@@ -26,8 +31,8 @@ const schema = new Schema(
     name: {
       type: String,
       enum: {
-        values: properties.nameEnum,
-        message: ValidationMsg.enumValue("name", properties.nameEnum),
+        values: Object.keys(properties.name),
+        message: ValidationMsg.enumValue("name", Object.keys(properties.name)),
       },
     },
   },

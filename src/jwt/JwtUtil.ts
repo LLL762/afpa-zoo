@@ -30,6 +30,7 @@ const createRefreshToken = (user: Doc<TypeApiUser>) => {
 const createPayload = (user: Doc<TypeApiUser>) => {
   return {
     username: user.username,
+    id: user._id,
     role: user.role,
     permissions: user.permissions,
   };
@@ -37,6 +38,7 @@ const createPayload = (user: Doc<TypeApiUser>) => {
 
 export interface IJwtPayload {
   username: string;
+  id: string;
   role?: TypeRole;
   permissions?: [TypePermission];
   iat: number;
@@ -47,6 +49,7 @@ export interface IJwtPayload {
 
 export interface IJwtRefreshPayload {
   username: string;
+  id: string;
   iat: number;
   exp: number;
   aud: string;

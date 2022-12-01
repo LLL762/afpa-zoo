@@ -62,11 +62,11 @@ const schema = new Schema(
     description: {
       type: String,
       maxlength: [
-        properties.name.maxLength,
+        properties.description.maxLength,
         Msg.maxLength("description", properties.description.maxLength),
       ],
       minlength: [
-        properties.name.minLength,
+        properties.description.minLength,
         Msg.minLength("description", properties.description.minLength),
       ],
     },
