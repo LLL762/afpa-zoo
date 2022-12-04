@@ -6,6 +6,8 @@ import ValidationUtility from "../validation/ValidationUtility";
 import { initRouter } from "./RouterInit";
 import passport from "passport";
 import PassportInit from "./PassportInit";
+import HelmetInit from "./HelmetInit";
+
 
 const init = () => {
   const app = express();
@@ -14,13 +16,15 @@ const init = () => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(logger("dev"));
+  HelmetInit.init(app);
   app.use(passport.initialize());
-  app.use(cors());
+  // app.use(cors());
   app.use(ValidationUtility.checkContentType);
   PassportInit.init();
   initRouter(router);
   app.use(router);
   app.use(GlobalErrorHandler.handle);
+
 
   return app;
 };

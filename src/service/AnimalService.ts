@@ -1,7 +1,8 @@
 import UriConfigs from "../configs/UriConfigs";
-import Animal from "../model/Animal";
+import Animal, { TypeAnimal } from "../model/Animal";
 import AnimalRepo from "../repo/AnimalRepo";
 import PaginationUtility from "../utility/PaginationUtility";
+import { Doc } from "../utility/TsTypes";
 
 const URIS = UriConfigs.URIS;
 const props = Animal.properties;
@@ -16,8 +17,6 @@ const findAll = async (pageIndex: number, pageSize: number) => {
   const queryResult = await AnimalRepo.findAll(pIndex, pSize);
   const animals = queryResult[0].animals;
   const nbAnimals = queryResult[0].page[0].count;
-
-  console.log(queryResult);
 
   const nbPages = PaginationUtility.getMaxPage(nbAnimals, pSize);
 
@@ -37,6 +36,14 @@ const findById = async (id: string) => {
   return AnimalRepo.findById(id);
 };
 
+const createAnimal = async (animal: Doc<TypeAnimal>) => {
+  return AnimalRepo.save(animal);
+}
+
+const updateAnimal = async (id: string, animal: Doc<TypeAnimal>) => {
+  return AnimalRepo.update(id, animal);
+}
+
 const existAnimals = async (ids: string[]): Promise<string[]> => {
   const dbAnimals = await AnimalRepo.findByIdIn(ids);
 
@@ -51,4 +58,4 @@ const existAnimals = async (ids: string[]): Promise<string[]> => {
   return notIn;
 };
 
-export default { findAll, findById, existAnimals };
+export default { findAll, findById, existAnimals, createAnimal, updateAnimal };

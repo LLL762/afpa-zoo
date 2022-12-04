@@ -85,6 +85,7 @@ const validateAnimals = (required: boolean) => {
   return start
     .isArray({ max: props.animals.max })
     .withMessage(Msg.maxSize("animals", props.animals.max))
+    .bail()
     .custom((ids) => ids.every((id: string) => validator.isMongoId(id)))
     .withMessage(Msg.containMongoId("animals"));
 };
@@ -98,6 +99,7 @@ const validateEnclosures = (required: boolean) => {
   return start
     .isArray({ max: props.animals.max })
     .withMessage(Msg.maxSize("animals", props.enclosures.max))
+    .bail()
     .custom((ids) => ids.every((id: string) => validator.isMongoId(id)))
     .withMessage(Msg.containMongoId("enclosures"));
 };

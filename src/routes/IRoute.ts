@@ -5,5 +5,7 @@ export interface IAppRoute {
   readonly uri: string;
   readonly handlers: any[];
   readonly needAuth?: boolean;
-  readonly role?: { name: RoleNameValue; highter?: boolean };
+  readonly role?: { name: RoleNameValue, highter?: boolean };
+  readonly permissions?: { permission: () => boolean, roleOperator: "OR" | "AND" }
+  readonly cacheable?: boolean;
 }

@@ -27,6 +27,7 @@ const schema = new Schema(
         properties.accessLevel.max,
         ValidationMsg.max("accessLevel", properties.accessLevel.max),
       ],
+      default: 0
     },
     name: {
       type: String,

@@ -16,6 +16,7 @@ const properties = {
   },
   password: {
     saltLength: 10,
+    maxLength: 255,
     details: {
       minLength: 10,
       minLowercase: 1,

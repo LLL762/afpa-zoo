@@ -1,6 +1,7 @@
 import { Router } from "express";
 import TokenFilter from "../auth/TokenFilter";
 import UriConfigs from "../configs/UriConfigs";
+import CacheHeaderMiddleware from "../middleware/CacheHeaderMiddleware";
 import AnimalRoutes from "../routes/AnimalRoutes";
 import AuthRoutes from "../routes/AuthRoutes";
 import EnclosureRoutes from "../routes/EnclosureRoutes";
@@ -36,6 +37,10 @@ const setUpRoutes = (router: Router, routes: IAppRoute[]) => {
 
     handlers.push(route.handlers);
 
+    if (route.cacheable) {
+      handlers.push(CacheHeaderMiddleware.add);
+    }
+
     switch (route.method) {
       case "GET":
         router.get(UriConfigs.URIS.base + route.uri, handlers);
@@ -60,6 +65,7 @@ const setUpRoutes = (router: Router, routes: IAppRoute[]) => {
       default:
         throw new Error("");
     }
+
   });
 };
 

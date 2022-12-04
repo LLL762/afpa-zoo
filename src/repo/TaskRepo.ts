@@ -5,17 +5,21 @@ import MongoQueryHelper from "./query/MongoQueryHelper";
 const findAll = async (
   pageIndex: number,
   pageSize: number,
+  match?: any,
   sort?: Record<string, 1 | -1>
 ) => {
-  const match = {
+  const matchCore = {
     $or: [
       { status: { $ne: "DONE" } },
       { resolvedAt: { $gte: new Date(Date.now() - 24 * 60 * 60 * 1000) } },
     ],
   };
+
+  const finalMatch = match ? { $and: [match, matchCore] } : matchCore;
+
   return Task.m
     .aggregate()
-    .match(match)
+    .match(finalMatch)
     .facet({
       page: [{ $count: "count" }],
       tasks: [

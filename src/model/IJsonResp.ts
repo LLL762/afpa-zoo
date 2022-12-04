@@ -26,6 +26,12 @@ export const sendDefaultResp = (
   res.status(status ?? 200).json(createBasicJson(req, data, status));
 };
 
+export const sendDefaultRes = (req: Request, res: Response) => {
+  const status = res.locals.status ?? 200;
+  res.status(status).json(createBasicJson(req, res.locals.data, status));
+
+}
+
 export const createBasicJson = (req: Request, data: any, status?: number) => {
   return {
     url: req.url,

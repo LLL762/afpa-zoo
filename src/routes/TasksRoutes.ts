@@ -1,6 +1,7 @@
 import TokenFilter from "../auth/TokenFilter";
 import UriConfigs from "../configs/UriConfigs";
 import TaskController from "../controller/TaskController";
+import { sendDefaultRes } from "../model/IJsonResp";
 import ResourceValidator from "../validation/ResourceValidator";
 import TaskValidator from "../validation/TaskValidator";
 import { IAppRoute } from "./IRoute";
@@ -12,11 +13,11 @@ const routes: IAppRoute[] = [
   {
     method: "GET",
     role: {
-      name: "ADMIN",
+      name: "STAFF",
       highter: true,
     },
     uri: URIS.tasks,
-    handlers: [TaskController.getAll],
+    handlers: [TaskController.getAll, sendDefaultRes],
   },
   {
     method: "GET",

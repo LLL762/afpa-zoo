@@ -10,7 +10,7 @@ const properties = {
     private: 1,
   },
   resource: {
-    values: ["ALL", "ZONE", "ENCLOSURE", "ANIMAL", "SPECY"],
+    values: ["ALL", "ZONE", "ENCLOSURE", "ANIMAL", "SPECY", "TASK"],
   },
   scope: {
     values: ["ALL", "RESOURCE"],

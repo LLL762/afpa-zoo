@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import Animal from "../model/Animal";
-import { IJsonResp, sendDefaultResp } from "../model/IJsonResp";
+import { sendDefaultResp } from "../model/IJsonResp";
 import AnimalService from "../service/AnimalService";
 
 const getAllHandler = async (
@@ -33,4 +33,20 @@ const getByIdHandler = async (
   }
 };
 
-export default { getAllHandler, getByIdHandler };
+const postHandler = async (req: Request, res: Response, next: NextFunction) => {
+
+}
+
+const patchHandler = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = req.params.id;
+    const animal = req.body;
+    const updated = await AnimalService.updateAnimal(id, animal);
+    sendDefaultResp(req, res, updated);
+  } catch (err) {
+    next(err);
+  }
+
+}
+
+export default { getAllHandler, getByIdHandler, patchHandler };

@@ -10,6 +10,8 @@ import EnclosureMock from "../mock-data/EnclosureMock";
 import EnclosureTypeMock from "../mock-data/EnclosureTypeMock";
 import { IMockDataUtil } from "../mock-data/IMockDataUtil";
 import ApiUserMock from "../mock-data/ApiUserMock";
+import TasksMock from "../mock-data/TasksMock";
+import SpeciesMock from "../mock-data/SpeciesMock";
 
 let mongoServer: MongoMemoryServer | undefined;
 let uri: string;
@@ -22,6 +24,8 @@ const configs = {
     EnclosureTypeMock.util,
     ZoneMock.util,
     ApiUserMock.util,
+    TasksMock.util,
+    SpeciesMock.util,
   ],
 } as const;
 
@@ -53,6 +57,6 @@ const populate = async (mocksUtils: IMockDataUtil[]) => {
   }
 };
 
-const clean = async () => {};
+const clean = async () => { };
 
 export default { connect, close, populate };

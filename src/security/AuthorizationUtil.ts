@@ -1,3 +1,4 @@
+import { Request, NextFunction } from "express";
 import { IJwtPayload } from "../jwt/JwtUtil";
 import Permission, { TypePermission } from "../model/Permission";
 import Role from "../model/Role";
@@ -18,8 +19,6 @@ const hasRole = (
 ) => {
   const userRole = payload.role?.name;
 
-  console.log(userRole);
-
   if (
     !userRole ||
     userRole.length === 0 ||
@@ -33,10 +32,6 @@ const hasRole = (
     (orHighter &&
       roleProps.name[userRole as RoleNameValue] > roleProps.name[roleName])
   );
-};
-
-const hasAccessLevel = (accessLevel: number, payload: IJwtPayload) => {
-  return payload.role?.accessLevel ?? 0 >= accessLevel;
 };
 
 const hasPermission = (payload: IJwtPayload, permission: TypePermission) => {
@@ -61,4 +56,10 @@ const hasPermission = (payload: IJwtPayload, permission: TypePermission) => {
   return typeof match != "undefined";
 };
 
-export default { hasRole, hasAccessLevel, hasPermission };
+const checkToken = (req: Request, next: NextFunction) => {
+  if (!req.user) {
+    return next(new Error("TokenFilter must be apply first"));
+  }
+}
+
+export default { hasRole, hasPermission, checkToken };

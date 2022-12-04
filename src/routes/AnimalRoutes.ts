@@ -15,6 +15,11 @@ const routes: IAppRoute[] = [
     uri: URI + "/" + UriConfigs.PATHVARS.id,
     handlers: [AnimalController.getByIdHandler],
   },
+  {
+    method: "PATCH",
+    uri: URI + "/" + UriConfigs.PATHVARS.id,
+    handlers: [AnimalController.patchHandler],
+  }
 ];
 
 export default { URI, routes };

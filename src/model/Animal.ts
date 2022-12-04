@@ -14,6 +14,9 @@ const properties = {
     size: 50,
     maxSize: 100,
   },
+  sexe: {
+    values: ["M", "F", "undefined", "hermaphrodite"]
+  }
 } as const;
 
 const schema = new Schema(
@@ -42,7 +45,7 @@ const schema = new Schema(
     },
     sexe: {
       type: String,
-      enum: ["M", "F", "undefined", "hermaphrodite"],
+      enum: properties.sexe.values,
       default: "undefined",
       required: true,
     },
@@ -63,7 +66,7 @@ const schema = new Schema(
   { collection: "animals", timestamps: true }
 );
 
-export type Animal = InferSchemaType<typeof schema>;
+export type TypeAnimal = InferSchemaType<typeof schema>;
 
 const m = model("Animal", schema);
 

@@ -1,4 +1,6 @@
-import Animal from "../model/Animal";
+import Animal, { TypeAnimal } from "../model/Animal";
+import { TypeTask } from "../model/Task";
+import { Doc } from "../utility/TsTypes";
 import MongoQueryHelper from "./query/MongoQueryHelper";
 
 const findAll = async (
@@ -48,6 +50,15 @@ const findByIdIn = async (ids: string[], projection?: Object) => {
   const project = projection ?? { _id: 1 };
   return Animal.m.find({ id: { $in: ids } }, project).exec();
 };
+
+const save = async (animal: Doc<TypeAnimal>) => {
+  return animal.save();
+}
+
+const update = async (id: string, animal: Doc<TypeAnimal>) => {
+  return Animal.m.findByIdAndUpdate(id, animal, { returnOriginal: false }).orFail().exec();
+}
+
 
 const findByEnclosure = async (enclosureId: string) => {
   return Animal.m
@@ -112,6 +123,8 @@ const inAnimals = async (animalsId: string[]) => {
   );
 };
 
+
+
 const getObservations = async (
   pageIndex: number,
   pageSize: number,
@@ -133,4 +146,6 @@ export default {
   outAnimalsByEnclosure,
   inAnimals,
   inAnimalsByEnclosure,
+  save,
+  update
 };

@@ -10,8 +10,10 @@ const getAll = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const pageIndex = req.query.page ? +req.query.page : NaN;
     const pageSize = req.query.size ? +req.query.size : NaN;
-    const data = await TaskService.findAll(pageIndex, pageSize);
-    sendDefaultResp(req, res, data);
+    const user = req.user as IJwtPayload;
+    const data = await TaskService.findAll(pageIndex, pageSize, user);
+    res.locals.data = data;
+    next();
   } catch (err) {
     next(err);
   }

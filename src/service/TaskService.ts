@@ -1,21 +1,29 @@
 import { Types } from "mongoose";
 import UriConfigs from "../configs/UriConfigs";
+import { IJwtPayload } from "../jwt/JwtUtil";
 import Task, { TypeTask } from "../model/Task";
 import TaskRepo from "../repo/TaskRepo";
+import AuthorizationUtil from "../security/AuthorizationUtil";
 import PaginationUtility from "../utility/PaginationUtility";
 import { Doc } from "../utility/TsTypes";
 
 const props = Task.properties;
 const URIS = UriConfigs.URIS;
 
-const findAll = async (pageIndex: number, pageSize: number) => {
+const findAll = async (pageIndex: number, pageSize: number, user: IJwtPayload) => {
   const pIndex = isNaN(pageIndex) ? 1 : pageIndex;
   const pSize = PaginationUtility.checkPageSize(
     pageSize,
     props.page.size,
     props.page.maxSize
   );
-  const queryResult = await TaskRepo.findAll(pIndex, pSize);
+  let match;
+
+  if (!AuthorizationUtil.hasRole("ADMIN", user, true)) {
+    match = { $or: [{ assignTo: new Types.ObjectId(user.id) }, { createdBy: new Types.ObjectId(user.id) }] };
+  }
+
+  const queryResult = await TaskRepo.findAll(pIndex, pSize, match);
   const tasks = queryResult[0].tasks;
 
   const nbTasks = queryResult[0].page[0]?.count ?? 0;

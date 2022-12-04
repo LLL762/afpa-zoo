@@ -49,6 +49,8 @@ const err = {
   contentType: "Content type must be application/json",
 } as const;
 
+const typeMustBe = (key: string, type: string) => { return key + " : must be " + type }
+
 export default {
   maxLength,
   minLength,
@@ -68,4 +70,5 @@ export default {
   maxSize,
   nbBetween,
   containMongoId,
+  typeMustBe
 };
