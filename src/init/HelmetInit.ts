@@ -5,7 +5,7 @@ const middlewares = [
     helmet.frameguard(),
     helmet.noSniff(),
     helmet.hsts(),
-    helmet.permittedCrossDomainPolicies()]
+]
 
 
 const init = (app: Express) => {

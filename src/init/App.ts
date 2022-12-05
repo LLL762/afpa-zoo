@@ -16,6 +16,7 @@ const init = () => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(logger("dev"));
+  app.use(cors());
   HelmetInit.init(app);
   app.use(passport.initialize());
   // app.use(cors());
