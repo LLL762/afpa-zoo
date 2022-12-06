@@ -32,6 +32,7 @@ const strategy = new Strategy(reqProps, async (username, password, done) => {
 
 const onSuccess = (res: Response, user: Doc<TypeApiUser>) => {
   res.setHeader("Authorization", "Bearer " + JwtUtil.createJwt(user));
+  res.setHeader("Access-Control-Expose-Headers", "Authorization");
   res.status(200).json({
     message: "authentication successfull",
     refreshToken: JwtUtil.createRefreshToken(user),
