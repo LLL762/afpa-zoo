@@ -5,10 +5,13 @@ import ZoneMock from "../../mock-data/ZoneMock";
 import { jest } from "@jest/globals";
 import request from "supertest";
 import { Error } from "mongoose";
+import JwtUtil from "../../../jwt/JwtUtil";
+import ApiUser from "../../../model/ApiUser";
 
 const app = App.init();
 const URIS = UriConfigs.URIS;
 const data = ZoneMock.createData();
+let jwt: string;
 
 const zoneService = require("../../../service/ZoneService");
 jest.mock("../../../service/ZoneService", () => ({
@@ -17,6 +20,7 @@ jest.mock("../../../service/ZoneService", () => ({
 
 beforeAll(() => {
   Server.init(app);
+  jwt = JwtUtil.createJwt(new ApiUser.m({ username: "Bob" }));
 });
 
 afterAll(() => {
@@ -34,6 +38,7 @@ describe("Get by id endpoint tests", () => {
     const res = await request(app)
       .get(url)
       .set("Content-Type", "application/json")
+      .set("Authorization", "Bearer " + jwt)
       .expect("Content-Type", /json/)
       .expect(200);
 
@@ -48,6 +53,7 @@ describe("Get by id endpoint tests", () => {
     const res = await request(app)
       .get(url)
       .set("Content-Type", "application/json")
+      .set("Authorization", "Bearer " + jwt)
       .expect("Content-Type", /json/)
       .expect(400);
 
@@ -55,7 +61,7 @@ describe("Get by id endpoint tests", () => {
     expect(res.body.errors).toBeDefined();
   });
 
-  it("when [valid but not exist] res should [contain errors]", async () => {
+  it("when [valid but does not exist] res should [contain errors]", async () => {
     const url = baseUrl + "/" + data[0]._id.toString();
 
     zoneService.findById.mockImplementation(() => {
@@ -65,9 +71,25 @@ describe("Get by id endpoint tests", () => {
     const res = await request(app)
       .get(url)
       .set("Content-Type", "application/json")
+      .set("Authorization", "Bearer " + jwt)
       .expect("Content-Type", /json/)
       .expect(404);
 
     expect(res.body.errors).toBeDefined();
   });
+
+  it("when [jwt is missing] res should [contain errors]", async () => {
+    const url = baseUrl + "/" + data[0]._id.toString();
+
+    const res = await request(app)
+      .get(url)
+      .set("Content-Type", "application/json")
+      .expect("Content-Type", /json/)
+      .expect(401);
+
+    expect(res.body.errors).toBeDefined();
+  });
+
+
+
 });
