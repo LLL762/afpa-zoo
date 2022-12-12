@@ -6,10 +6,13 @@ import { Doc } from "../../../utility/TsTypes";
 import ZoneMock from "../../mock-data/ZoneMock";
 import request from "supertest";
 import { UniqueKeyError } from "../../../error/UniqueKeyError";
+import JwtUtil from "../../../jwt/JwtUtil";
+import ApiUser from "../../../model/ApiUser";
 
 const app = App.init();
 const URIS = UriConfigs.URIS;
 const validData = ZoneMock.createOne(0);
+let jwt: string;
 
 const zoneService = require("../../../service/ZoneService");
 jest.mock("../../../service/ZoneService", () => ({
@@ -17,9 +20,8 @@ jest.mock("../../../service/ZoneService", () => ({
 }));
 
 beforeAll(() => {
-  console.log("Open");
-
   Server.init(app);
+  jwt = JwtUtil.createJwt(new ApiUser.m({ username: "Bob" }));
 });
 
 afterAll(() => {
@@ -38,6 +40,7 @@ describe("Create endpoint tests", () => {
     const res = await request(app)
       .post(url)
       .set("Content-Type", "application/json")
+      .set("Authorization", "Bearer " + jwt)
       .send(validData)
       .expect("Content-Type", /json/)
       .expect(201);
@@ -53,6 +56,7 @@ describe("Create endpoint tests", () => {
     const res = await request(app)
       .post(url)
       .set("Content-Type", "application/json")
+      .set("Authorization", "Bearer " + jwt)
       .send(missingName)
       .expect("Content-Type", /json/)
       .expect(400);
@@ -67,6 +71,7 @@ describe("Create endpoint tests", () => {
     const res = await request(app)
       .post(url)
       .set("Content-Type", "application/json")
+      .set("Authorization", "Bearer " + jwt)
       .send(invalidJson)
       .expect("Content-Type", /json/)
       .expect(400);
@@ -82,6 +87,7 @@ describe("Create endpoint tests", () => {
     const res = await request(app)
       .post(url)
       .set("Content-Type", "application/json")
+      .set("Authorization", "Bearer " + jwt)
       .send(validData)
       .expect("Content-Type", /json/)
       .expect(400);
@@ -105,10 +111,27 @@ describe("Create endpoint tests", () => {
     const res = await request(app)
       .post(url)
       .set("Content-Type", "application/json")
+      .set("Authorization", "Bearer " + jwt)
       .send(validData)
       .expect("Content-Type", /json/)
       .expect(400);
 
     expect(res.body.errors.type).toBe("UniqueKeyError");
   });
+
+  it("when [jwt is missing] res should [contain errors]", async () => {
+    const res = await request(app)
+      .post(url)
+      .set("Content-Type", "application/json")
+      .send(validData)
+      .expect("Content-Type", /json/)
+      .expect(401);
+
+    expect(res.body.errors).toBeDefined();
+  });
+
 });
+
+
+
+
