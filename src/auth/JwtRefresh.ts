@@ -15,6 +15,8 @@ const strategy = new Strategy(
 );
 
 const filter = async (req: Request, res: Response, next: NextFunction) => {
+  console.log(req.body);
+
   await passport.authenticate(
     "jwt-refresh",
     { session: false },

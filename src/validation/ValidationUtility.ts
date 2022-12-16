@@ -35,7 +35,7 @@ const checkContentType = async (
     return next();
   }
 
-  req.headers["content-type"] == "application/json"
+  req.headers["content-type"]?.startsWith("application/json")
     ? next()
     : next(
         new BadRequestError("content-type must be application/json", {

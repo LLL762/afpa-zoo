@@ -10,8 +10,7 @@ const handle = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(err);
-  console.log("--------------------------------");
+  console.log(req.headers["content-type"]);
 
   if (err instanceof Error.DocumentNotFoundError) {
     res.status(404).json({
