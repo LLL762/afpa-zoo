@@ -31,6 +31,7 @@ const validateEmail = (required: boolean) => {
         .bail()
         .isEmail()
         .withMessage(Msg.invalidEmail)
+        .normalizeEmail()
 }
 
 const validatePassword = (required: boolean) => {

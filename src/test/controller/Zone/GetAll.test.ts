@@ -5,10 +5,13 @@ import request from "supertest";
 import UriConfigs from "../../../configs/UriConfigs";
 import ZoneMock from "../../mock-data/ZoneMock";
 import ValidationMsg from "../../../messages/ValidationMsg";
+import JwtUtil from "../../../jwt/JwtUtil";
+import ApiUser from "../../../model/ApiUser";
 
 const app = App.init();
 const URIS = UriConfigs.URIS;
 const data = ZoneMock.createData();
+let jwt: string;
 
 const zoneService = require("../../../service/ZoneService");
 jest.mock("../../../service/ZoneService", () => ({
@@ -17,6 +20,7 @@ jest.mock("../../../service/ZoneService", () => ({
 
 beforeAll(() => {
   Server.init(app);
+  jwt = JwtUtil.createJwt(new ApiUser.m({ username: "Bob" }));
 });
 
 afterAll(() => {
@@ -31,6 +35,7 @@ describe("Get all endpoint tests", () => {
     const res = await request(app)
       .get(url)
       .set("Content-Type", "application/json")
+      .set("Authorization", "Bearer " + jwt)
       .expect("Content-Type", /json/)
       .expect(200);
 
@@ -43,6 +48,7 @@ describe("Get all endpoint tests", () => {
     const res = await request(app)
       .get(url)
       .expect("Content-Type", /json/)
+      .set("Authorization", "Bearer " + jwt)
       .expect(400);
 
     expect(res.body.errors.message).toBe(ValidationMsg.err.contentType);
@@ -55,6 +61,7 @@ describe("Get all endpoint tests", () => {
     const res = await request(app)
       .get(url)
       .set("Content-Type", "application/json")
+      .set("Authorization", "Bearer " + jwt)
       .query({ page: "2", size: "3" })
       .expect("Content-Type", /json/)
       .expect(200);
@@ -69,6 +76,7 @@ describe("Get all endpoint tests", () => {
     const res = await request(app)
       .get(url)
       .set("Content-Type", "application/json")
+      .set("Authorization", "Bearer " + jwt)
       .query({ page: "-1", size: "3" })
       .expect("Content-Type", /json/)
       .expect(400);
@@ -83,10 +91,27 @@ describe("Get all endpoint tests", () => {
     const res = await request(app)
       .get(url)
       .set("Content-Type", "application/json")
+      .set("Authorization", "Bearer " + jwt)
       .query({ page: "-1", size: "-3" })
       .expect("Content-Type", /json/)
       .expect(400);
 
     expect(res.body.errors.details).toHaveLength(2);
   });
+
+  it("when [jwt is missing], res should [contain errors]", async () => {
+    const expectedData = "doesn't matter";
+
+    zoneService.findAll.mockImplementation(() => expectedData);
+    const res = await request(app)
+      .get(url)
+      .set("Content-Type", "application/json")
+      .query({ page: "1", size: "3" })
+      .expect(401);
+
+    expect(res.body.errors).toBeDefined();
+  });
+
+
+
 });
