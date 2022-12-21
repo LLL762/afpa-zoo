@@ -29,6 +29,7 @@ const findAll = async (
         MongoQueryHelper.lookUpEnclosures,
         MongoQueryHelper.lookUpAnimals,
         MongoQueryHelper.lookUpApiUserFn("createdBy"),
+        { $unwind: { path: "$createdBy", preserveNullAndEmptyArrays: true } },
         MongoQueryHelper.lookUpApiUserFn("assignTo"),
       ],
     });
