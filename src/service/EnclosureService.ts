@@ -36,8 +36,9 @@ const findAll = async (pageIndex: number, pageSize: number) => {
 };
 
 const findById = async (id: string) => {
-  const enclosure = (await EnclosureRepo.findById(id)) as any;
+  const enclosure = (await EnclosureRepo.findById(id))[0] as any;
   const enclosureCopy = JSON.parse(JSON.stringify(enclosure));
+
 
   addUrls(enclosureCopy);
 
